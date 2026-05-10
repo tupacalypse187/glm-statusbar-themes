@@ -1,0 +1,44 @@
+{
+  "name": "glm-statusbar-themes",
+  "version": "1.0.0",
+  "description": "Themed status bar for Claude Code with GLM/z.ai proxy — 9 color themes, 3 layout styles, 6 swappable metric modules",
+  "main": "src/index.js",
+  "bin": {
+    "glm-statusbar-themes": "bin/cli.js"
+  },
+  "scripts": {
+    "test": "echo '{}' | node bin/cli.js --local",
+    "preview": "node bin/cli.js --preview"
+  },
+  "keywords": [
+    "glm",
+    "zhipu",
+    "z-ai",
+    "claude-code",
+    "statusline",
+    "status-bar",
+    "themes",
+    "coding-plan",
+    "token-usage"
+  ],
+  "author": "Chad Yantorno",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tupacalypse187/glm-statusbar-themes.git"
+  },
+  "bugs": {
+    "url": "https://github.com/tupacalypse187/glm-statusbar-themes/issues"
+  },
+  "homepage": "https://github.com/tupacalypse187/glm-statusbar-themes#readme",
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "files": [
+    "bin/",
+    "src/",
+    "README.md",
+    "LICENSE"
+  ],
+  "dependencies": {}
+}
