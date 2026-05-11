@@ -20,7 +20,7 @@ Three-layer design: **data** → **modules** → **rendering**.
 - `resolveModules()` maps config keys to module objects
 
 ### Rendering layer (`src/themes.js`, `src/styles.js`, `src/formatter.js`)
-- 9 themes (pure RGB palettes) x 3 styles (layout renderers) = 27 combinations
+- 20 themes (pure RGB palettes) x 3 styles (layout renderers) = 60 combinations
 - 24-bit true color ANSI (`\033[38;2;R;G;Bm`)
 - Severity coloring: `< warning` → ok, `< critical` → warn, `>= critical` → hot
 - Styles iterate over resolved modules dynamically (no hardcoded metrics)

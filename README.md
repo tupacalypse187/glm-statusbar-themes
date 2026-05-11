@@ -1,7 +1,7 @@
 # GLM Statusbar Themes
 
 > A beautifully themed status bar for **Claude Code** running on the **GLM / z.ai** proxy.
-> 9 color themes · 3 layout styles · 6 swappable metric modules · Zero dependencies
+> 20 color themes · 3 layout styles · 6 swappable metric modules · Zero dependencies
 
 <p align="center">
   <img src="https://img.shields.io/badge/node-%3E%3D16.0.0-green" />
@@ -20,7 +20,7 @@ This tool runs as Claude Code's `statusLine` command and renders a live, color-t
 - **Quota monitoring** — 5-hour rolling window usage with reset time
 - **Context window** — percentage used + actual tokens used / window size
 - **Cache hit rate** — how effectively your prompt cache is working
-- **9 color themes** — from dark professional to neon pastel
+- **20 color themes** — from dark professional to neon pastel, light to cosmic
 - **3 layout styles** — battery bars, capsule pills, or minimal hairline
 - **6 swappable modules** — pick which metrics appear as progress bars
 
@@ -83,19 +83,37 @@ That's it — the status bar appears on the next refresh.
 
 ## Themes
 
-9 built-in color palettes. Every theme works with every style.
+20 built-in color palettes. Every theme works with every style.
+
+### Dark themes
 
 | Theme | Vibe | OK (green) | Warning | Critical |
 |:---|:---|:---|:---|:---|
 | `graphite` | Dark slate, quiet professional | Teal `#78c8c0` | Amber `#e8b260` | Red `#e87474` |
 | `twilight` | Purple twilight, soft rose | Muted green `#a0d2b4` | Orange `#e8a05a` | Pink `#e4648c` |
-| `linen` | Beige, light/sunny terminal | Sage `#508c78` | Gold `#be823c` | Red `#be5050` |
 | `nord` | Scandinavian blue, classic dev | Forest `#a3be8c` | Yellow `#ebcb8b` | Red `#bf616a` |
 | `dracula` | Purple-black, high contrast | Neon `#50fa7b` | Yellow `#f1fa8c` | Red `#ff5555` |
-| `sakura` | Pink-warm, cute | Soft green `#78aa82` | Orange `#dc965a` | Pink `#d25a6e` |
 | `mono` | Pure grayscale, minimalist | Light gray `#b4b4b4` | Mid gray `#dcdcdc` | White `#fafafa` |
 | `catppuccin-mocha` | Soft pastel, easy on eyes | Mint `#a6e3a1` | Peach `#fab387` | Pink `#f38ba8` |
 | `tokyo-night` | Deep neon blue | Lime `#9ece6a` | Orange `#e0af68` | Pink `#f7768e` |
+| `solarized-dark` | Classic warm/cool, Ethan Schoonover | Olive `#859900` | Amber `#b58900` | Red `#dc322f` |
+| `gruvbox` | Warm retro groove, earthy oranges | Olive `#98971a` | Orange `#d79921` | Red `#cc241d` |
+| `one-dark` | Atom editor, balanced warm dark | Green `#98c379` | Gold `#e5c07b` | Red `#e06c75` |
+| `rose-pine` | Soft pink, muted pastel, elegant | Teal `#9ccfd8` | Pink `#ea9dbb` | Rose `#eb6f92` |
+| `github-dark` | Clean, professional, code review | Green `#3fb950` | Gold `#e3b341` | Red `#f85149` |
+| `night-owl` | Vivid on dark blue, Sarah Drasner | Mint `#7fdbb3` | Orange `#ffb74d` | Pink `#ff5571` |
+| `material` | Google Material Design, bold | Green `#81c784` | Yellow `#ffd54f` | Red `#ef5350` |
+| `everforest` | Warm green, nature-inspired | Olive `#a8c67e` | Gold `#e6b45a` | Red `#d66a6a` |
+| `ayu` | Warm dark, dusty orange accents | Green `#82c882` | Gold `#ffc850` | Red `#ff5f5f` |
+| `palenight` | Soft purple/pink, muted cosmic | Lime `#c4d88e` | Peach `#ffc878` | Pink `#ff828c` |
+
+### Light themes
+
+| Theme | Vibe | OK (green) | Warning | Critical |
+|:---|:---|:---|:---|:---|
+| `linen` | Beige, light/sunny terminal | Sage `#508c78` | Gold `#be823c` | Red `#be5050` |
+| `sakura` | Pink-warm, cute | Soft green `#78aa82` | Orange `#dc965a` | Pink `#d25a6e` |
+| `solarized-light` | Classic warm/cool, light variant | Olive `#859900` | Amber `#b58900` | Red `#dc322f` |
 
 ### Switch themes
 
