@@ -23,7 +23,7 @@ const MODULES = [
   },
   {
     key: 'ctx',
-    label: 'Ctx',
+    label: 'Context',
     description: 'Context window usage %',
     getPct: (d) => d.contextUsed,
     getExtra: (d) => d.contextSize ? fmtSize(d.contextSize) : '',
@@ -41,7 +41,7 @@ const MODULES = [
   },
   {
     key: '5h-tokens',
-    label: '5hTok',
+    label: '5H Tokens',
     description: 'Token consumption in last 5 hours',
     getPct: (d) => {
       // Show as % of 5h quota percentage — acts as a "how much of your 5h window have you burned"
@@ -120,7 +120,10 @@ function fmtSize(n) {
 function fmtReset(ts) {
   if (!ts) return '';
   const d = new Date(ts);
-  return String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
+  let h = d.getHours();
+  const ampm = h >= 12 ? 'PM' : 'AM';
+  h = h % 12 || 12;
+  return h + ':' + String(d.getMinutes()).padStart(2, '0') + ' ' + ampm;
 }
 
 module.exports = { MODULES, getModule, listModules, resolveModules, validateModules };

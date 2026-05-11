@@ -1,4 +1,4 @@
-# 🎨 GLM Statusbar Themes
+# GLM Statusbar Themes
 
 > A beautifully themed status bar for **Claude Code** running on the **GLM / z.ai** proxy.
 > 9 color themes · 3 layout styles · 6 swappable metric modules · Zero dependencies
@@ -7,35 +7,30 @@
   <img src="https://img.shields.io/badge/node-%3E%3D16.0.0-green" />
   <img src="https://img.shields.io/badge/zero-dependencies-blue" />
   <img src="https://img.shields.io/badge/license-MIT-purple" />
+  <img src="https://img.shields.io/npm/v/glm-statusbar-themes" />
 </p>
 
 ---
 
-## ✨ What it does
+## What it does
 
 This tool runs as Claude Code's `statusLine` command and renders a live, color-themed bar at the bottom of your terminal showing:
 
-- 📊 **Token usage** — session, daily, and monthly token counts
-- ⏱️ **Quota monitoring** — 5-hour rolling window usage with reset countdown
-- 🧠 **Context window** — how much of your context window is consumed
-- 💾 **Cache hit rate** — how effectively your prompt cache is working
-- 🎨 **9 color themes** — from dark professional to neon pastel
-- 🧩 **3 layout styles** — battery bars, capsule pills, or minimal hairline
-- 🔌 **6 swappable modules** — pick which metrics appear as progress bars
+- **Token usage** — session, daily, monthly, and 5-hour token counts
+- **Quota monitoring** — 5-hour rolling window usage with reset countdown
+- **Context window** — how much of your context window is consumed
+- **Cache hit rate** — how effectively your prompt cache is working
+- **9 color themes** — from dark professional to neon pastel
+- **3 layout styles** — battery bars, capsule pills, or minimal hairline
+- **6 swappable modules** — pick which metrics appear as progress bars
+
+All three styles show the same information: **progress bar modules** (configurable) + **text stats** (Model, Session, Day, Month, 5h Tokens).
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
-### 1. Install
-
-```bash
-# Clone the repo
-git clone https://github.com/your-username/glm-statusbar-themes.git
-cd glm-statusbar-themes
-```
-
-### 2. Configure Claude Code
+### Option A: npx (recommended)
 
 Add this to `~/.claude/settings.json`:
 
@@ -47,12 +42,30 @@ Add this to `~/.claude/settings.json`:
   },
   "statusLine": {
     "type": "command",
+    "command": "npx -y glm-statusbar-themes"
+  }
+}
+```
+
+### Option B: Local clone
+
+```bash
+git clone https://github.com/tupacalypse187/glm-statusbar-themes.git
+cd glm-statusbar-themes
+```
+
+Then point `statusLine.command` at the local path:
+
+```json
+{
+  "statusLine": {
+    "type": "command",
     "command": "node /absolute/path/to/glm-statusbar-themes/bin/cli.js"
   }
 }
 ```
 
-### 3. Create your config (optional)
+### Create your config (optional)
 
 Create `~/.claude/glm-statusbar.json`:
 
@@ -60,7 +73,7 @@ Create `~/.claude/glm-statusbar.json`:
 {
   "theme": "tokyo-night",
   "style": "capsule",
-  "modules": ["5h", "cache", "ctx"]
+  "modules": ["5h", "ctx"]
 }
 ```
 
@@ -68,42 +81,45 @@ That's it — the status bar appears on the next refresh.
 
 ---
 
-## 🎨 Themes
+## Themes
 
-| Theme | Style | Description |
-|:---|:---:|:---|
-| `graphite` | 🌑 | Dark slate — quiet, professional, dark-terminal friendly |
-| `twilight` | 🌆 | Purple twilight — soft purple/rose tones |
-| `linen` | ☀️ | Beige linen — light terminal / sunny themes |
-| `nord` | ❄️ | Nord — Scandinavian blue palette, classic dev colors |
-| `dracula` | 🧛 | Dracula — purple-black high contrast |
-| `sakura` | 🌸 | Sakura — pink-warm tones, cute and healing |
-| `mono` | ⚫ | Mono — pure grayscale, minimalist |
-| `catppuccin-mocha` | 🍫 | Catppuccin Mocha — soft pastel, easy on the eyes |
-| `tokyo-night` | 🌃 | Tokyo Night — deep neon blue, vivid but quiet |
+9 built-in color palettes. Every theme works with every style.
+
+| Theme | Vibe | OK (green) | Warning | Critical |
+|:---|:---|:---|:---|:---|
+| `graphite` | Dark slate, quiet professional | Teal `#78c8c0` | Amber `#e8b260` | Red `#e87474` |
+| `twilight` | Purple twilight, soft rose | Muted green `#a0d2b4` | Orange `#e8a05a` | Pink `#e4648c` |
+| `linen` | Beige, light/sunny terminal | Sage `#508c78` | Gold `#be823c` | Red `#be5050` |
+| `nord` | Scandinavian blue, classic dev | Forest `#a3be8c` | Yellow `#ebcb8b` | Red `#bf616a` |
+| `dracula` | Purple-black, high contrast | Neon `#50fa7b` | Yellow `#f1fa8c` | Red `#ff5555` |
+| `sakura` | Pink-warm, cute | Soft green `#78aa82` | Orange `#dc965a` | Pink `#d25a6e` |
+| `mono` | Pure grayscale, minimalist | Light gray `#b4b4b4` | Mid gray `#dcdcdc` | White `#fafafa` |
+| `catppuccin-mocha` | Soft pastel, easy on eyes | Mint `#a6e3a1` | Peach `#fab387` | Pink `#f38ba8` |
+| `tokyo-night` | Deep neon blue | Lime `#9ece6a` | Orange `#e0af68` | Pink `#f7768e` |
 
 ### Switch themes
 
 ```bash
-# From the command line
-node bin/cli.js config set theme dracula
-node bin/cli.js config set theme tokyo-night
+# Via config (persists)
+npx glm-statusbar-themes config set theme dracula
 
 # Or override for one invocation
-echo '{}' | node bin/cli.js --theme nord --style capsule --local
+echo '{}' | npx glm-statusbar-themes --theme nord --local
 ```
 
 ---
 
-## 🧱 Styles
+## Styles
+
+3 layout renderers. All styles show the same data — just different visual presentation.
 
 ### Classic — Battery bars
 
 Two-line layout with `[████░░░░]` battery bars and percentage overlays.
 
 ```
-GLM-5 │ Sess:160.0K │ Day:42.8M │ Mon:979.2M
-5h [██░░░░░░░░] 22% ⏰15:38 │ Cache [░░░░░░░░░░] 33% │ Ctx [██████░░░░] 68% (200K)
+GLM-5 │ Sess:160.0K │ Day:42.8M │ Mon:979.2M │ 5h:12.5M
+5H [██░░░░░░░░] 22% (08:44) │ Ctx [██████░░░░] 68% (200K)
 ```
 
 ### Capsule — Colored pills
@@ -111,7 +127,7 @@ GLM-5 │ Sess:160.0K │ Day:42.8M │ Mon:979.2M
 Single-line pill/capsule style with distinct background colors per metric and severity dots.
 
 ```
-◷ 5H 22% · 15:38 ● ╱ ◷ Cache 33% ● ╱ ◷ Ctx 68% 200K ● ╱ ◆ GLM-5 ● ╱ Sess 160K ╱ Day 42.8M
+◷ 5H 22% · 08:44 ● ╱ ◷ Ctx 68% 200K ● ╱ ◆ GLM-5 ● ╱ Sess 160K ╱ Day 42.8M ╱ Mon 979.2M ╱ 5hTok 12.5M
 ```
 
 ### Hairline — Minimal
@@ -119,56 +135,94 @@ Single-line pill/capsule style with distinct background colors per metric and se
 Single-line with 3-cell mini progress bars and `┊` separators. Most compact.
 
 ```
-› 5h ▖▁▁ 22% ↺ 15:38 ┊ › Cache ▖▁▁ 33% ┊ › Ctx ██▁ 42% 200K ┊ GLM-5 ┊ Sess 160K ┊ Day 42.8M
+› 5H ▖▁▁ 22% 08:44 ┊ › Ctx ██▓ 68% 200K ┊ GLM-5 ┊ Sess 160K ┊ Day 42.8M ┊ Mon 979.2M ┊ 5h 12.5M
 ```
 
 ### Switch styles
 
 ```bash
-node bin/cli.js config set style capsule
-node bin/cli.js config set style hairline
-node bin/cli.js config set style classic
+npx glm-statusbar-themes config set style capsule
+npx glm-statusbar-themes config set style hairline
+npx glm-statusbar-themes config set style classic
 ```
 
 ---
 
-## 🔌 Modules
+## Modules
 
-The progress bar slots are fully customizable. Pick which metrics you want to see and in what order.
+The progress bar slots are fully customizable. Pick which metrics you want to see as bars and in what order. Text stats (Model, Session, Day, Month, 5h Tokens) are always shown regardless of module selection.
 
 ### Available modules
 
-| Key | Label | Description |
-|:---|:---:|:---|
-| `5h` | `5H` | 5-hour rolling quota % with reset countdown |
-| `mcp` | `MCP` | MCP tool-call quota % |
-| `ctx` | `Ctx` | Context window usage % |
-| `cache` | `Cache` | Cache hit rate % — how much of your input is cache-read vs fresh |
-| `5h-tokens` | `5hTok` | Actual token consumption in the last 5 hours |
-| `daily` | `Daily` | Daily tokens as a % of your average daily burn rate |
+| Key | Label | Source | Description |
+|:---|:---:|:---|:---|
+| `5h` | `5H` | API quota | 5-hour rolling quota % with reset time |
+| `mcp` | `MCP` | API quota | MCP tool-call quota % with reset time |
+| `ctx` | `Ctx` | stdin | Context window usage % with window size |
+| `cache` | `Cache` | derived | Cache hit rate % (cache-read vs total input) |
+| `5h-tokens` | `5hTok` | API daily | Token consumption in last 5 hours |
+| `daily` | `Daily` | API + derived | Daily tokens as % of average daily burn rate |
 
-> **Default modules:** `5h`, `cache`, `ctx`
-> The `mcp` module is available but not included by default since most users have near-unlimited MCP quota.
+### Text stats (always shown)
+
+These appear alongside the module bars in every style:
+
+| Stat | Source | Example |
+|:---|:---|:---|
+| Model | stdin | `GLM-5` |
+| Session tokens | stdin (derived) | `160K` |
+| Daily tokens | API | `42.8M` |
+| Monthly tokens | API | `979.2M` |
+| 5h tokens | API | `12.5M` |
 
 ### Swap modules
 
 ```bash
-# Replace cache with daily burn rate
-node bin/cli.js config set modules 5h,daily,ctx
+# Minimal — just the real limits
+npx glm-statusbar-themes config set modules 5h,ctx
 
 # Add MCP back
-node bin/cli.js config set modules 5h,mcp,cache,ctx
-
-# Just two bars — keep it minimal
-node bin/cli.js config set modules 5h,ctx
+npx glm-statusbar-themes config set modules 5h,mcp,ctx
 
 # Everything
-node bin/cli.js config set modules 5h,mcp,cache,5h-tokens,daily,ctx
+npx glm-statusbar-themes config set modules 5h,mcp,cache,5h-tokens,daily,ctx
 ```
 
 ---
 
-## ⚙️ Configuration
+## Severity Colors
+
+Metrics change color based on usage level. Thresholds and colors are fully customizable.
+
+| Level | Default range | Meaning |
+|:---|:---|:---|
+| **OK** (green) | < warning threshold | Healthy, plenty of headroom |
+| **Warning** (yellow) | >= warning threshold | Getting close to limit |
+| **Critical** (red) | >= critical threshold | Approaching or at limit |
+
+### Custom severity colors
+
+Override the green/yellow/red with any hex color:
+
+```bash
+npx glm-statusbar-themes config set color_ok "#50fa7b"
+npx glm-statusbar-themes config set color_warn "#f1fa8c"
+npx glm-statusbar-themes config set color_hot "#ff5555"
+
+# Clear an override
+npx glm-statusbar-themes config set color_ok off
+```
+
+### Custom thresholds
+
+```bash
+npx glm-statusbar-themes config set warning_threshold 40
+npx glm-statusbar-themes config set critical_threshold 75
+```
+
+---
+
+## Configuration
 
 ### Config file
 
@@ -178,7 +232,7 @@ node bin/cli.js config set modules 5h,mcp,cache,5h-tokens,daily,ctx
 {
   "theme": "tokyo-night",
   "style": "capsule",
-  "modules": ["5h", "cache", "ctx"],
+  "modules": ["5h", "ctx"],
   "warning_threshold": 50,
   "critical_threshold": 80,
   "color_ok": "#a6e3a1",
@@ -191,7 +245,7 @@ node bin/cli.js config set modules 5h,mcp,cache,5h-tokens,daily,ctx
 |:---|:---|:---|:---|
 | `theme` | string | `"graphite"` | Color palette |
 | `style` | string | `"classic"` | Layout renderer |
-| `modules` | array | `["5h","cache","ctx"]` | Which metrics to show as progress bars |
+| `modules` | array | `["5h","ctx"]` | Which metrics to show as progress bars |
 | `warning_threshold` | number | `50` | Percentage for yellow severity |
 | `critical_threshold` | number | `80` | Percentage for red severity |
 | `color_ok` | string | `null` | Override green severity color (hex) |
@@ -215,11 +269,11 @@ CLI flag → environment variable → config file → built-in default
 
 ---
 
-## 🛠️ CLI Reference
+## CLI Reference
 
 ```
-glm-statusbar [options]              Render status line (reads stdin from Claude Code)
-glm-statusbar config <subcommand>    Manage persistent configuration
+npx glm-statusbar-themes [options]              Render status line (reads stdin from Claude Code)
+npx glm-statusbar-themes config <subcommand>    Manage persistent configuration
 ```
 
 ### Render options
@@ -228,7 +282,7 @@ glm-statusbar config <subcommand>    Manage persistent configuration
 |:---|:---|
 | `--local`, `-l` | Local mode only (no API calls) |
 | `--compact`, `-c` | Compact single-line mode |
-| `--preview`, `-p` | Preview all theme × style combinations |
+| `--preview`, `-p` | Preview all theme x style combinations |
 | `--theme <name>` | Override theme for this invocation |
 | `--style <name>` | Override style for this invocation |
 | `--list-themes` | List available themes |
@@ -240,60 +294,60 @@ glm-statusbar config <subcommand>    Manage persistent configuration
 ### Config commands
 
 ```bash
-glm-statusbar config set <key> <value>    # Set a config value
-glm-statusbar config get [key]            # Get current config (or single key)
-glm-statusbar config reset                # Reset all config to defaults
-glm-statusbar config help                 # Show detailed config help
+npx glm-statusbar-themes config set <key> <value>    # Set a config value
+npx glm-statusbar-themes config get [key]            # Get current config (or single key)
+npx glm-statusbar-themes config reset                # Reset all config to defaults
+npx glm-statusbar-themes config help                 # Show detailed config help
 ```
 
 #### Examples
 
 ```bash
 # Theme & style
-glm-statusbar config set theme dracula
-glm-statusbar config set style hairline
+npx glm-statusbar-themes config set theme dracula
+npx glm-statusbar-themes config set style hairline
 
 # Modules
-glm-statusbar config set modules 5h,cache,ctx
-glm-statusbar config set modules 5h,daily,ctx
+npx glm-statusbar-themes config set modules 5h,ctx
+npx glm-statusbar-themes config set modules 5h,mcp,cache,ctx
 
 # Severity thresholds
-glm-statusbar config set warning_threshold 40
-glm-statusbar config set critical_threshold 75
+npx glm-statusbar-themes config set warning_threshold 40
+npx glm-statusbar-themes config set critical_threshold 75
 
 # Color overrides
-glm-statusbar config set color_ok "#a6e3a1"
-glm-statusbar config set color_warn "#fab387"
-glm-statusbar config set color_ok off       # clear override
+npx glm-statusbar-themes config set color_ok "#a6e3a1"
+npx glm-statusbar-themes config set color_warn "#fab387"
+npx glm-statusbar-themes config set color_ok off       # clear override
 
 # Inspect
-glm-statusbar config get
-glm-statusbar config get theme
-glm-statusbar config get modules
+npx glm-statusbar-themes config get
+npx glm-statusbar-themes config get theme
+npx glm-statusbar-themes config get modules
 
 # Reset everything
-glm-statusbar config reset
+npx glm-statusbar-themes config reset
 ```
 
 ---
 
-## 🖼️ Preview all combinations
+## Preview all combinations
 
-See every theme × style with sample data:
+See every theme x style with sample data:
 
 ```bash
-node bin/cli.js --preview
+npx glm-statusbar-themes --preview
 ```
 
 Or test a specific combo with your own data:
 
 ```bash
-echo '{"model":{"display_name":"GLM-5"},"context_window":{"used_percentage":42,"context_window_size":200000,"current_usage":{"input_tokens":50000,"output_tokens":25000,"cache_creation_input_tokens":10000,"cache_read_input_tokens":30000}}}' | node bin/cli.js --local --theme dracula --style capsule
+echo '{"model":{"display_name":"GLM-5"},"context_window":{"used_percentage":42,"context_window_size":200000,"current_usage":{"input_tokens":50000,"output_tokens":25000,"cache_creation_input_tokens":10000,"cache_read_input_tokens":30000}}}' | npx glm-statusbar-themes --local --theme dracula --style capsule
 ```
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 glm-statusbar-themes/
@@ -317,7 +371,7 @@ glm-statusbar-themes/
 
 ---
 
-## 🙏 Credits
+## Credits
 
 This project was built on the shoulders of two excellent projects:
 
@@ -328,6 +382,6 @@ This project merges the best of both: GLM-native data fetching with rich themed 
 
 ---
 
-## 📄 License
+## License
 
 MIT

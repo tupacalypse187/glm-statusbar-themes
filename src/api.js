@@ -157,6 +157,10 @@ async function fetchDailyUsage() {
 
 /**
  * 计算最近 N 小时的 token 使用量
+ *
+ * API returns times in CST (UTC+8) without timezone info. We detect the
+ * offset by comparing the API's query window boundaries (sent in local time)
+ * against the returned timestamps, then apply that offset to all slots.
  */
 function calculateRecentHoursTokens(times, tokens, hours) {
   if (!times || !tokens || times.length === 0) {
@@ -164,26 +168,37 @@ function calculateRecentHoursTokens(times, tokens, hours) {
   }
 
   const now = new Date();
+
+  // Detect CST offset: API times are UTC+8, find the offset by looking at
+  // the hour difference between now and the nearest API slot
+  // Since we queried with local hours, the API returns slots aligned to
+  // CST hours. The offset = (local UTC offset) - 8h.
+  const localOffsetMinutes = now.getTimezoneOffset(); // minutes west of UTC (negative for east)
+  // CST is UTC+8, so CST offset from local = 8h + localOffsetMinutes
+  // e.g. EDT (UTC-4): localOffsetMinutes = 240, offset = 8*60 + 240 = 720 min = 12h
+  // e.g. CST itself: localOffsetMinutes = -480, offset = 8*60 + (-480) = 0
+  const offsetMs = (8 * 60 + localOffsetMinutes) * 60 * 1000;
+
   let totalTokens = 0;
 
   for (let i = 0; i < times.length; i++) {
     if (!times[i]) continue;
 
     try {
-      // 解析时间字符串 (格式: "YYYY-MM-DD HH:mm:ss" 或 ISO 格式)
-      const timeStr = times[i].replace(' ', 'T');
-      const recordTime = new Date(timeStr);
+      // Parse API time as if it were local, then shift by the CST-to-local offset
+      const recordTime = new Date(times[i].replace(' ', 'T'));
+      // recordTime was parsed as local but is actually CST
+      // To convert CST -> real local: subtract the offset
+      const adjustedTime = new Date(recordTime.getTime() - offsetMs);
 
-      // 计算时间差（小时）
-      const diffMs = now - recordTime;
+      const diffMs = now - adjustedTime;
       const diffHours = diffMs / (1000 * 60 * 60);
 
-      // 如果在指定小时数内，累加 token
       if (diffHours >= 0 && diffHours <= hours) {
         totalTokens += tokens[i] || 0;
       }
     } catch (e) {
-      // 忽略解析错误
+      // skip parse errors
     }
   }
 

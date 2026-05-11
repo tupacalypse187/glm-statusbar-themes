@@ -16,7 +16,7 @@ Three-layer design: **data** → **modules** → **rendering**.
 ### Module layer (`src/modules.js`, `src/config.js`)
 - 6 metric modules, each with `getPct(data)` and `getExtra(data)`
 - Config `modules` array selects which modules render as progress bars
-- Default: `["5h", "cache", "ctx"]`
+- Default: `["5h", "ctx"]`
 - `resolveModules()` maps config keys to module objects
 
 ### Rendering layer (`src/themes.js`, `src/styles.js`, `src/formatter.js`)
@@ -24,11 +24,13 @@ Three-layer design: **data** → **modules** → **rendering**.
 - 24-bit true color ANSI (`\033[38;2;R;G;Bm`)
 - Severity coloring: `< warning` → ok, `< critical` → warn, `>= critical` → hot
 - Styles iterate over resolved modules dynamically (no hardcoded metrics)
+- All three styles show the same text stats: Model, Sess, Day, Mon, 5hTok
 
 ### CLI (`bin/cli.js`)
 - `config set/get/reset` subcommands write to `~/.claude/glm-statusbar.json`
 - Main path reads stdin from Claude Code, resolves config, calls formatter
 - `--preview` renders all 27 combinations with sample data
+- Installable via `npx glm-statusbar-themes` or local clone
 
 ### Bridge (`src/bridge.js`)
 - Writes session state to `/tmp/claude-ctx-{session_id}.json`
@@ -39,6 +41,7 @@ Three-layer design: **data** → **modules** → **rendering**.
 - `normalizeData()` in styles.js flattens context + usageData into one object
 - Module `getPct()` returns `null` when data is unavailable → renders `--%`
 - Config resolution: CLI flag > env var > config file > default
+- `nextResetTime` from API is a unix ms timestamp, formatted as HH:MM clock time
 
 ## Testing
 ```bash
