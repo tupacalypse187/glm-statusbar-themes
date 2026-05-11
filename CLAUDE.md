@@ -24,7 +24,7 @@ Three-layer design: **data** → **modules** → **rendering**.
 - 24-bit true color ANSI (`\033[38;2;R;G;Bm`)
 - Severity coloring: `< warning` → ok, `< critical` → warn, `>= critical` → hot
 - Styles iterate over resolved modules dynamically (no hardcoded metrics)
-- All three styles show the same text stats: Model, Sess, Day, Mon, 5hTok
+- All three styles show the same text stats: Model, Session, Daily, Monthly, 5H Tokens
 
 ### CLI (`bin/cli.js`)
 - `config set/get/reset` subcommands write to `~/.claude/glm-statusbar.json`
@@ -41,7 +41,9 @@ Three-layer design: **data** → **modules** → **rendering**.
 - `normalizeData()` in styles.js flattens context + usageData into one object
 - Module `getPct()` returns `null` when data is unavailable → renders `--%`
 - Config resolution: CLI flag > env var > config file > default
-- `nextResetTime` from API is a unix ms timestamp, formatted as HH:MM clock time
+- `nextResetTime` from API is a unix ms timestamp, formatted as 12h AM/PM
+- API returns hourly timestamps in CST (UTC+8) — `calculateRecentHoursTokens()` offsets to local time
+- Context module `getExtra()` shows tokens used / window size (e.g. `136.0K / 200K`)
 
 ## Testing
 ```bash
