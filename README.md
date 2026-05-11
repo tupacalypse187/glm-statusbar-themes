@@ -16,15 +16,15 @@
 
 This tool runs as Claude Code's `statusLine` command and renders a live, color-themed bar at the bottom of your terminal showing:
 
-- **Token usage** — session, daily, monthly, and 5-hour token counts
-- **Quota monitoring** — 5-hour rolling window usage with reset countdown
-- **Context window** — how much of your context window is consumed
+- **Token usage** — Session, Daily, Monthly, and 5H token counts
+- **Quota monitoring** — 5-hour rolling window usage with reset time
+- **Context window** — percentage used + actual tokens used / window size
 - **Cache hit rate** — how effectively your prompt cache is working
 - **9 color themes** — from dark professional to neon pastel
 - **3 layout styles** — battery bars, capsule pills, or minimal hairline
 - **6 swappable modules** — pick which metrics appear as progress bars
 
-All three styles show the same information: **progress bar modules** (configurable) + **text stats** (Model, Session, Day, Month, 5h Tokens).
+All three styles show the same information: **progress bar modules** (configurable) + **text stats** (Model, Session, Daily, Monthly, 5H Tokens).
 
 ---
 
@@ -118,8 +118,8 @@ echo '{}' | npx glm-statusbar-themes --theme nord --local
 Two-line layout with `[████░░░░]` battery bars and percentage overlays.
 
 ```
-GLM-5 │ Sess:160.0K │ Day:42.8M │ Mon:979.2M │ 5h:12.5M
-5H [██░░░░░░░░] 22% (08:44) │ Ctx [██████░░░░] 68% (200K)
+GLM-5  │ Session:160.0K  │ Daily:42.8M  │ Monthly:979.2M  │ 5H Tokens:12.5M
+5H [██░░░░░░░░] 22% (12:39 PM)  │ Context [██████░░░░] 68% (136.0K / 200K)
 ```
 
 ### Capsule — Colored pills
@@ -127,7 +127,7 @@ GLM-5 │ Sess:160.0K │ Day:42.8M │ Mon:979.2M │ 5h:12.5M
 Single-line pill/capsule style with distinct background colors per metric and severity dots.
 
 ```
-◷ 5H 22% · 08:44 ● ╱ ◷ Ctx 68% 200K ● ╱ ◆ GLM-5 ● ╱ Sess 160K ╱ Day 42.8M ╱ Mon 979.2M ╱ 5hTok 12.5M
+◷ 5H 22% · 12:39 PM ● ╱ ◷ Context 68% · 136.0K / 200K ● ╱ ◆ GLM-5 ● ╱ Session 160K ╱ Daily 42.8M ╱ Monthly 979.2M ╱ 5H Tokens 12.5M
 ```
 
 ### Hairline — Minimal
@@ -135,7 +135,7 @@ Single-line pill/capsule style with distinct background colors per metric and se
 Single-line with 3-cell mini progress bars and `┊` separators. Most compact.
 
 ```
-› 5H ▖▁▁ 22% 08:44 ┊ › Ctx ██▓ 68% 200K ┊ GLM-5 ┊ Sess 160K ┊ Day 42.8M ┊ Mon 979.2M ┊ 5h 12.5M
+› 5H ▖▁▁ 22% 12:39 PM ┊ › Context ██▓ 68% 136.0K / 200K ┊ GLM-5 ┊ Session 160K ┊ Daily 42.8M ┊ Monthly 979.2M ┊ 5H Tokens 12.5M
 ```
 
 ### Switch styles
@@ -150,18 +150,18 @@ npx glm-statusbar-themes config set style classic
 
 ## Modules
 
-The progress bar slots are fully customizable. Pick which metrics you want to see as bars and in what order. Text stats (Model, Session, Day, Month, 5h Tokens) are always shown regardless of module selection.
+The progress bar slots are fully customizable. Pick which metrics you want to see as bars and in what order. Text stats (Model, Session, Daily, Monthly, 5H Tokens) are always shown regardless of module selection.
 
 ### Available modules
 
-| Key | Label | Source | Description |
-|:---|:---:|:---|:---|
-| `5h` | `5H` | API quota | 5-hour rolling quota % with reset time |
-| `mcp` | `MCP` | API quota | MCP tool-call quota % with reset time |
-| `ctx` | `Ctx` | stdin | Context window usage % with window size |
-| `cache` | `Cache` | derived | Cache hit rate % (cache-read vs total input) |
-| `5h-tokens` | `5hTok` | API daily | Token consumption in last 5 hours |
-| `daily` | `Daily` | API + derived | Daily tokens as % of average daily burn rate |
+| Key | Label | Source | Bar Shows | Extra Info |
+|:---|:---:|:---|:---|:---|
+| `5h` | `5H` | API quota | 5-hour rolling quota % | Reset time (12h AM/PM) |
+| `mcp` | `MCP` | API quota | MCP tool-call quota % | Reset time (12h AM/PM) |
+| `ctx` | `Context` | stdin | Context window usage % | Tokens used / window size (e.g. `136.0K / 200K`) |
+| `cache` | `Cache` | derived | Cache hit rate % | — |
+| `5h-tokens` | `5H Tokens` | API daily | Token consumption in last 5h | Token count |
+| `daily` | `Daily` | API + derived | Daily tokens vs avg burn rate | Token count |
 
 ### Text stats (always shown)
 
@@ -170,10 +170,10 @@ These appear alongside the module bars in every style:
 | Stat | Source | Example |
 |:---|:---|:---|
 | Model | stdin | `GLM-5` |
-| Session tokens | stdin (derived) | `160K` |
-| Daily tokens | API | `42.8M` |
-| Monthly tokens | API | `979.2M` |
-| 5h tokens | API | `12.5M` |
+| Session | stdin (derived) | `160.0K` |
+| Daily | API | `42.8M` |
+| Monthly | API | `979.2M` |
+| 5H Tokens | API | `12.5M` |
 
 ### Swap modules
 

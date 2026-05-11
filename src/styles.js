@@ -207,7 +207,7 @@ function renderHairline(data, theme, modules, opts = {}) {
 
   // Model + stats
   const modelCol = data.contextUsed == null ? INK : fg(severityColor(theme, data.contextUsed, warningThreshold, criticalThreshold));
-  parts.push(`${MUTE}›${RESET} ${modelCol}${data.model}${RESET} ${MUTE}${formatContextSize(data.contextSize)}${RESET}`);
+  parts.push(`${MUTE}›${RESET} ${modelCol}${data.model}${RESET}`);
   parts.push(`${MUTE}Session${RESET} ${INK}${formatTokens(data.sessionTokens)}${RESET}`);
   parts.push(`${MUTE}Daily${RESET} ${INK}${formatTokens(data.dailyTokens)}${RESET}`);
   parts.push(`${MUTE}Month${RESET} ${INK}${formatTokens(data.monthlyTokens)}${RESET}`);

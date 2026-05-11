@@ -26,7 +26,11 @@ const MODULES = [
     label: 'Context',
     description: 'Context window usage %',
     getPct: (d) => d.contextUsed,
-    getExtra: (d) => d.contextSize ? fmtSize(d.contextSize) : '',
+    getExtra: (d) => {
+      if (!d.contextSize) return '';
+      const used = d.contextUsed != null ? Math.round(d.contextSize * d.contextUsed / 100) : 0;
+      return fmtTok(used) + ' / ' + fmtSize(d.contextSize);
+    },
   },
   {
     key: 'cache',
