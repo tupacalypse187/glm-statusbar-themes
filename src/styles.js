@@ -125,6 +125,7 @@ function renderClassic(data, theme, modules, opts = {}) {
   line1Parts.push(`${MUTE}Sess:${formatTokens(data.sessionTokens)}${RESET}`);
   line1Parts.push(`${INK}Day:${formatTokens(data.dailyTokens)}${RESET}`);
   line1Parts.push(`${INK}Mon:${formatTokens(data.monthlyTokens)}${RESET}`);
+  line1Parts.push(`${INK}5h:${formatTokens(data.fiveHourTokens)}${RESET}`);
   const line1 = line1Parts.join(` ${separator} `);
 
   // Line 2: dynamic module bars
@@ -177,9 +178,11 @@ function renderCapsule(data, theme, modules, opts = {}) {
   // Model pill
   parts.push(pill(theme.pill_model, `${BOLD}◆${RESET}${INK}${bg(theme.pill_model)} ${data.model}${sevDot(data.contextUsed)}${INK}${bg(theme.pill_model)}`));
 
-  // Session + daily pills
+  // Text stat pills: Sess, Day, Mon, 5hTok
   parts.push(pill(theme.pill_7d, `${BOLD}Sess${RESET}${INK}${bg(theme.pill_7d)} ${formatTokens(data.sessionTokens)}`));
   parts.push(pill(theme.pill_daily, `${BOLD}Day${RESET}${INK}${bg(theme.pill_daily)} ${formatTokens(data.dailyTokens)}`));
+  parts.push(pill(theme.pill_7d, `${BOLD}Mon${RESET}${INK}${bg(theme.pill_7d)} ${formatTokens(data.monthlyTokens)}`));
+  parts.push(pill(theme.pill_daily, `${BOLD}5hTok${RESET}${INK}${bg(theme.pill_daily)} ${formatTokens(data.fiveHourTokens)}`));
 
   return parts.join(spacer);
 }
@@ -208,6 +211,7 @@ function renderHairline(data, theme, modules, opts = {}) {
   parts.push(`${MUTE}Sess${RESET} ${INK}${formatTokens(data.sessionTokens)}${RESET}`);
   parts.push(`${MUTE}Day${RESET} ${INK}${formatTokens(data.dailyTokens)}${RESET}`);
   parts.push(`${MUTE}Mon${RESET} ${INK}${formatTokens(data.monthlyTokens)}${RESET}`);
+  parts.push(`${MUTE}5h${RESET} ${INK}${formatTokens(data.fiveHourTokens)}${RESET}`);
 
   return parts.join(sep);
 }
