@@ -28,13 +28,17 @@ This tool runs as Claude Code's `statusLine` command and renders a live, color-t
 
 All four styles show the same information: **progress bar modules** (configurable) + **text stats** (Model, Session, Daily, Monthly, 5H Tokens).
 
+**Install:** `npm install -g glm-statusbar-themes` or just use `npx glm-statusbar-themes` — no install needed.
+
+**npm:** [https://www.npmjs.com/package/glm-statusbar-themes](https://www.npmjs.com/package/glm-statusbar-themes)
+
 ---
 
 ## Quick Start
 
 ### Option A: npx (recommended)
 
-Add this to `~/.claude/settings.json`:
+The fastest way to get going — no global install required. Add this to `~/.claude/settings.json`:
 
 ```json
 {
