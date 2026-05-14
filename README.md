@@ -148,7 +148,7 @@ Two-line layout with `[████░░░░]` battery bars and percentage ov
 
 ```
 🤖 GLM-5  │ 💬 Session:160.0K  │ 📈 Daily:42.8M  │ 📅 Monthly:979.2M  │ 🔥 5H Tokens:12.5M
-⏱️ 5H [██░░░░░░░░] 22% (12:39 PM)  │ 🧠 Context [██████░░░░] 68% (136.0K / 200K)  │ 💰 Cost $1.76
+⏱️ 5H [██░░░░░░░░] 22% (12:39 PM)  │ 🧠 Context [██████░░░░] 68% (136.0K / 200K)  │ 💰 Cost S:$1.76 5H:$125.00 M:$9,792.00
 ```
 
 ### Capsule — Colored pills
@@ -156,7 +156,7 @@ Two-line layout with `[████░░░░]` battery bars and percentage ov
 Single-line pill/capsule style with distinct background colors per metric and severity dots.
 
 ```
-⏱️ ◷ 5H 22% · 12:39 PM ● ╱ 🧠 ◷ Context 68% · 136.0K / 200K ● ╱ 💰 Cost $1.76 ╱ 🤖 ◆ GLM-5 ● ╱ 💬 Session 160K ╱ 📈 Daily 42.8M ╱ 📅 Monthly 979.2M ╱ 🔥 5H Tokens 12.5M
+⏱️ ◷ 5H 22% · 12:39 PM ● ╱ 🧠 ◷ Context 68% · 136.0K / 200K ● ╱ 💰 Cost S:$1.76 5H:$125.00 M:$9,792.00 ╱ 🤖 ◆ GLM-5 ● ╱ 💬 Session 160K ╱ 📈 Daily 42.8M ╱ 📅 Monthly 979.2M ╱ 🔥 5H Tokens 12.5M
 ```
 
 ### Hairline — Minimal
@@ -164,7 +164,7 @@ Single-line pill/capsule style with distinct background colors per metric and se
 Single-line with 3-cell mini progress bars and `┊` separators. Most compact.
 
 ```
-⏱️ › 5H ▖▁▁ 22% 12:39 PM ┊ 🧠 › Context ██▓ 68% 136.0K / 200K ┊ 💰 › Cost $1.76 ┊ 🤖 GLM-5 ┊ 💬 Session 160K ┊ 📈 Daily 42.8M ┊ 📅 Monthly 979.2M ┊ 🔥 5H Tokens 12.5M
+⏱️ › 5H ▖▁▁ 22% 12:39 PM ┊ 🧠 › Context ██▓ 68% 136.0K / 200K ┊ 💰 › Cost S:$1.76 5H:$125.00 M:$9,792.00 ┊ 🤖 GLM-5 ┊ 💬 Session 160K ┊ 📈 Daily 42.8M ┊ 📅 Monthly 979.2M ┊ 🔥 5H Tokens 12.5M
 ```
 
 ### Gradient — Color-shifting bars
@@ -173,7 +173,7 @@ Two-line layout where bar colors shift smoothly from cool (ok) to warm (critical
 
 ```
 🤖 GLM-5  │ 💬 Session:160.0K  │ 📈 Daily:42.8M  │ 📅 Monthly:979.2M  │ 🔥 5H Tokens:12.5M
-⏱️ 5H [░░░░░░░░░░] --%  │ 🧠 Context [██████░░░░] 68% (136.0K / 200K)  │ 💰 Cost $1.76
+⏱️ 5H [░░░░░░░░░░] --%  │ 🧠 Context [██████░░░░] 68% (136.0K / 200K)  │ 💰 Cost S:$1.76 5H:$125.00 M:$9,792.00
 ```
 
 The gradient uses the theme's own severity colors as endpoints — ok to warn at low usage, warn to critical at high usage — so it adapts to every theme.
@@ -203,7 +203,7 @@ The progress bar slots are fully customizable. Pick which metrics you want to se
 | `cache` | `Cache` | derived | Cache hit rate % | — |
 | `5h-tokens` | `5H Tokens` | API daily | Token consumption in last 5h | Token count |
 | `daily` | `Daily` | API + derived | Daily tokens vs avg burn rate | Token count |
-| `cost` | `Cost` | derived (text-only) | — | Estimated cost (e.g. `$1.76`) |
+| `cost` | `Cost` | derived (text-only) | — | Session / 5H / Monthly cost (e.g. `S:$1.76 5H:$125.00 M:$9,792.00`) |
 
 ### Cost estimation
 

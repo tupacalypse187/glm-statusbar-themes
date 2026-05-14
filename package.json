@@ -1,6 +1,6 @@
 {
   "name": "glm-statusbar-themes",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Themed status bar for Claude Code with GLM/z.ai proxy — 25 color themes, 4 layout styles, 7 swappable metric modules",
   "main": "src/index.js",
   "bin": {
