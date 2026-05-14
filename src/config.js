@@ -21,6 +21,7 @@ const DEFAULTS = {
   color_hot: null,
   two_lines: true,
   modules: ['5h', 'cache', 'ctx'],
+  emojis: true,
 };
 
 function readConfigFile() {
@@ -61,6 +62,7 @@ function resolveConfig(cliFlags = {}) {
     colorHot: cliFlags.colorHot || process.env.CLAUDE_STATUSBAR_COLOR_HOT || file.color_hot || null,
     twoLines: cliFlags.compact ? false : (file.two_lines ?? DEFAULTS.two_lines),
     modules: cliFlags.modules || file.modules || DEFAULTS.modules,
+    emojis: cliFlags.noEmojis ? false : (process.env.CLAUDE_STATUSBAR_EMOJIS ? process.env.CLAUDE_STATUSBAR_EMOJIS === 'true' : (file.emojis ?? DEFAULTS.emojis)),
   };
 }
 
@@ -77,7 +79,7 @@ function writeConfigFile(obj) {
  * Validates theme/style names and threshold ranges.
  */
 function setConfigValue(key, value) {
-  const validKeys = ['theme', 'style', 'warning_threshold', 'critical_threshold', 'color_ok', 'color_warn', 'color_hot', 'two_lines', 'modules'];
+  const validKeys = ['theme', 'style', 'warning_threshold', 'critical_threshold', 'color_ok', 'color_warn', 'color_hot', 'two_lines', 'modules', 'emojis'];
 
   if (!validKeys.includes(key)) {
     return { ok: false, error: `Unknown key "${key}". Valid keys: ${validKeys.join(', ')}` };
@@ -113,6 +115,11 @@ function setConfigValue(key, value) {
 
   // Validate two_lines
   if (key === 'two_lines') {
+    value = value === 'true' || value === '1';
+  }
+
+  // Validate emojis
+  if (key === 'emojis') {
     value = value === 'true' || value === '1';
   }
 
