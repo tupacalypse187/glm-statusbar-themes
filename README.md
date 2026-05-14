@@ -1,7 +1,7 @@
 # GLM Statusbar Themes
 
 > A beautifully themed status bar for **Claude Code** running on the **GLM / z.ai** proxy.
-> 25 color themes · 4 layout styles · 7 swappable metric modules · Zero dependencies
+> 20 color themes · 3 layout styles · 6 swappable metric modules · Zero dependencies
 
 <p align="center">
   <img src="https://img.shields.io/badge/node-%3E%3D16.0.0-green" />
@@ -20,13 +20,11 @@ This tool runs as Claude Code's `statusLine` command and renders a live, color-t
 - **Quota monitoring** — 5-hour rolling window usage with reset time
 - **Context window** — percentage used + actual tokens used / window size
 - **Cache hit rate** — how effectively your prompt cache is working
-- **Estimated cost** — API cost based on Claude Code pricing equivalents
-- **Emojis** — visual indicators for every metric (togglable)
-- **25 color themes** — from dark professional to vivid neon, light to cosmic
-- **4 layout styles** — battery bars, capsule pills, minimal hairline, or gradient
-- **7 swappable modules** — pick which metrics appear as progress bars
+- **20 color themes** — from dark professional to neon pastel, light to cosmic
+- **3 layout styles** — battery bars, capsule pills, or minimal hairline
+- **6 swappable modules** — pick which metrics appear as progress bars
 
-All four styles show the same information: **progress bar modules** (configurable) + **text stats** (Model, Session, Daily, Monthly, 5H Tokens).
+All three styles show the same information: **progress bar modules** (configurable) + **text stats** (Model, Session, Daily, Monthly, 5H Tokens).
 
 ---
 
@@ -85,7 +83,7 @@ That's it — the status bar appears on the next refresh.
 
 ## Themes
 
-25 built-in color palettes. Every theme works with every style.
+20 built-in color palettes. Every theme works with every style.
 
 ### Dark themes
 
@@ -108,11 +106,6 @@ That's it — the status bar appears on the next refresh.
 | `everforest` | Warm green, nature-inspired | Olive `#a8c67e` | Gold `#e6b45a` | Red `#d66a6a` |
 | `ayu` | Warm dark, dusty orange accents | Green `#82c882` | Gold `#ffc850` | Red `#ff5f5f` |
 | `palenight` | Soft purple/pink, muted cosmic | Lime `#c4d88e` | Peach `#ffc878` | Pink `#ff828c` |
-| `synthwave` | 80s neon, hot pink and cyan | Cyan `#00FFFF` | Magenta `#FF00FF` | Hot pink `#FF1493` |
-| `cyberpunk` | Acid green, electric blue | Electric green `#00FF88` | Orange `#FF6600` | Magenta `#FF0066` |
-| `neon` | Maximum brightness, vivid saturated | Neon green `#39FF14` | Neon yellow `#FFFF00` | Hot pink `#FF006E` |
-| `candy` | Bright pastels, bubblegum and mint | Mint `#64FFB4` | Lemon `#FFDC64` | Bubblegum `#FF5082` |
-| `lava` | Molten reds and oranges, fiery | Gold `#FFB432` | Orange `#FF781E` | Lava red `#FF2814` |
 
 ### Light themes
 
@@ -136,15 +129,15 @@ echo '{}' | npx glm-statusbar-themes --theme nord --local
 
 ## Styles
 
-4 layout renderers. All styles show the same data — just different visual presentation.
+3 layout renderers. All styles show the same data — just different visual presentation.
 
 ### Classic — Battery bars
 
 Two-line layout with `[████░░░░]` battery bars and percentage overlays.
 
 ```
-🤖 GLM-5  │ 💬 Session:160.0K  │ 📈 Daily:42.8M  │ 📅 Monthly:979.2M  │ 🔥 5H Tokens:12.5M
-⏱️ 5H [██░░░░░░░░] 22% (12:39 PM)  │ 🧠 Context [██████░░░░] 68% (136.0K / 200K)  │ 💰 Cost $1.76
+GLM-5  │ Session:160.0K  │ Daily:42.8M  │ Monthly:979.2M  │ 5H Tokens:12.5M
+5H [██░░░░░░░░] 22% (12:39 PM)  │ Context [██████░░░░] 68% (136.0K / 200K)
 ```
 
 ### Capsule — Colored pills
@@ -152,7 +145,7 @@ Two-line layout with `[████░░░░]` battery bars and percentage ov
 Single-line pill/capsule style with distinct background colors per metric and severity dots.
 
 ```
-⏱️ ◷ 5H 22% · 12:39 PM ● ╱ 🧠 ◷ Context 68% · 136.0K / 200K ● ╱ 💰 Cost $1.76 ╱ 🤖 ◆ GLM-5 ● ╱ 💬 Session 160K ╱ 📈 Daily 42.8M ╱ 📅 Monthly 979.2M ╱ 🔥 5H Tokens 12.5M
+◷ 5H 22% · 12:39 PM ● ╱ ◷ Context 68% · 136.0K / 200K ● ╱ ◆ GLM-5 ● ╱ Session 160K ╱ Daily 42.8M ╱ Monthly 979.2M ╱ 5H Tokens 12.5M
 ```
 
 ### Hairline — Minimal
@@ -160,19 +153,8 @@ Single-line pill/capsule style with distinct background colors per metric and se
 Single-line with 3-cell mini progress bars and `┊` separators. Most compact.
 
 ```
-⏱️ › 5H ▖▁▁ 22% 12:39 PM ┊ 🧠 › Context ██▓ 68% 136.0K / 200K ┊ 💰 › Cost $1.76 ┊ 🤖 GLM-5 ┊ 💬 Session 160K ┊ 📈 Daily 42.8M ┊ 📅 Monthly 979.2M ┊ 🔥 5H Tokens 12.5M
+› 5H ▖▁▁ 22% 12:39 PM ┊ › Context ██▓ 68% 136.0K / 200K ┊ GLM-5 ┊ Session 160K ┊ Daily 42.8M ┊ Monthly 979.2M ┊ 5H Tokens 12.5M
 ```
-
-### Gradient — Color-shifting bars
-
-Two-line layout where bar colors shift smoothly from cool (ok) to warm (critical) based on usage level. Each cell in the bar gets an interpolated color, creating a gradient effect that intensifies as usage grows.
-
-```
-🤖 GLM-5  │ 💬 Session:160.0K  │ 📈 Daily:42.8M  │ 📅 Monthly:979.2M  │ 🔥 5H Tokens:12.5M
-⏱️ 5H [░░░░░░░░░░] --%  │ 🧠 Context [██████░░░░] 68% (136.0K / 200K)  │ 💰 Cost $1.76
-```
-
-The gradient uses the theme's own severity colors as endpoints — ok to warn at low usage, warn to critical at high usage — so it adapts to every theme.
 
 ### Switch styles
 
@@ -180,7 +162,6 @@ The gradient uses the theme's own severity colors as endpoints — ok to warn at
 npx glm-statusbar-themes config set style capsule
 npx glm-statusbar-themes config set style hairline
 npx glm-statusbar-themes config set style classic
-npx glm-statusbar-themes config set style gradient
 ```
 
 ---
@@ -199,30 +180,6 @@ The progress bar slots are fully customizable. Pick which metrics you want to se
 | `cache` | `Cache` | derived | Cache hit rate % | — |
 | `5h-tokens` | `5H Tokens` | API daily | Token consumption in last 5h | Token count |
 | `daily` | `Daily` | API + derived | Daily tokens vs avg burn rate | Token count |
-| `cost` | `Cost` | derived (text-only) | — | Estimated cost (e.g. `$1.76`) |
-
-### Cost estimation
-
-The `cost` module estimates API spending as if using Claude Code models. It shows three cost breakdowns:
-
-| Label | Scope | Calculation |
-|:---|:---|:---|
-| `S:` | This session | Exact: input + output + cache write + cache read at per-token rates |
-| `5H:` | Last 5 hours | Estimated: total 5H tokens × blended rate (75% input + 25% output) |
-| `M:` | Calendar month | Estimated: monthly tokens × blended rate (75% input + 25% output) |
-
-Monthly is calendar month (resets on the 1st), not a rolling 30-day window.
-
-Pricing per million tokens:
-
-| GLM Model | Claude Equivalent | Input | Output | Cache Read | Cache Write |
-|:---|:---|:---|:---|:---|:---|
-| `glm-5-1` | Opus 4.6 | $5.00 | $25.00 | $0.50 | $10.00 |
-| `glm-5-turbo` | Sonnet 4.6 | $3.00 | $15.00 | $0.30 | $6.00 |
-| `glm-5v-turbo` | Sonnet 4.6 | $3.00 | $15.00 | $0.30 | $6.00 |
-| `glm-4.7-flash` | Haiku 4.5 | $1.00 | $5.00 | $0.10 | $2.00 |
-
-The cost module is **text-only** — it shows as a label with dollar amounts, not a progress bar.
 
 ### Text stats (always shown)
 
@@ -242,14 +199,11 @@ These appear alongside the module bars in every style:
 # Minimal — just the real limits
 npx glm-statusbar-themes config set modules 5h,ctx
 
-# With cost tracking
-npx glm-statusbar-themes config set modules 5h,ctx,cost
-
 # Add MCP back
 npx glm-statusbar-themes config set modules 5h,mcp,ctx
 
 # Everything
-npx glm-statusbar-themes config set modules 5h,mcp,cache,5h-tokens,daily,ctx,cost
+npx glm-statusbar-themes config set modules 5h,mcp,cache,5h-tokens,daily,ctx
 ```
 
 ---
@@ -299,7 +253,6 @@ npx glm-statusbar-themes config set critical_threshold 75
   "modules": ["5h", "ctx"],
   "warning_threshold": 50,
   "critical_threshold": 80,
-  "emojis": true,
   "color_ok": "#a6e3a1",
   "color_warn": "#fab387",
   "color_hot": "#f38ba8"
@@ -313,7 +266,6 @@ npx glm-statusbar-themes config set critical_threshold 75
 | `modules` | array | `["5h","ctx"]` | Which metrics to show as progress bars |
 | `warning_threshold` | number | `50` | Percentage for yellow severity |
 | `critical_threshold` | number | `80` | Percentage for red severity |
-| `emojis` | boolean | `true` | Show emoji prefixes |
 | `color_ok` | string | `null` | Override green severity color (hex) |
 | `color_warn` | string | `null` | Override yellow severity color (hex) |
 | `color_hot` | string | `null` | Override red severity color (hex) |
@@ -332,7 +284,6 @@ CLI flag → environment variable → config file → built-in default
 | `CLAUDE_STATUSBAR_STYLE` | Override style |
 | `CLAUDE_STATUSBAR_WARNING_THRESHOLD` | Override warning % |
 | `CLAUDE_STATUSBAR_CRITICAL_THRESHOLD` | Override critical % |
-| `CLAUDE_STATUSBAR_EMOJIS` | Override emoji display (`true`/`false`) |
 
 ---
 
@@ -356,7 +307,6 @@ npx glm-statusbar-themes config <subcommand>    Manage persistent configuration
 | `--list-styles` | List available styles |
 | `--list-modules` | List available metric modules |
 | `--clear-cache` | Clear all cached API data |
-| `--no-emojis` | Disable emoji prefixes for this invocation |
 | `--help`, `-h` | Show help |
 
 ### Config commands
@@ -382,10 +332,6 @@ npx glm-statusbar-themes config set modules 5h,mcp,cache,ctx
 # Severity thresholds
 npx glm-statusbar-themes config set warning_threshold 40
 npx glm-statusbar-themes config set critical_threshold 75
-
-# Emojis
-npx glm-statusbar-themes config set emojis false     # disable
-npx glm-statusbar-themes config set emojis true       # enable
 
 # Color overrides
 npx glm-statusbar-themes config set color_ok "#a6e3a1"
@@ -428,9 +374,9 @@ glm-statusbar-themes/
 ├── src/
 │   ├── index.js          # Main orchestrator — data fetching, caching, bridge
 │   ├── api.js            # GLM/z.ai HTTPS client (quota, usage endpoints)
-│   ├── themes.js         # 25 color palettes with severity overrides
-│   ├── styles.js         # 4 layout renderers (classic, capsule, hairline, gradient)
-│   ├── modules.js        # 7 metric module definitions with MODEL_PRICING
+│   ├── themes.js         # 9 color palettes with severity overrides
+│   ├── styles.js         # 3 layout renderers (classic, capsule, hairline)
+│   ├── modules.js        # 6 metric module definitions
 │   ├── formatter.js      # Context parser + theme/style delegation
 │   ├── config.js         # Config file reader/writer with validation
 │   ├── cache.js          # File-based API response cache in /tmp

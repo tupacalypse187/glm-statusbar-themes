@@ -188,41 +188,6 @@ const BUILTIN_THEMES = [
     pill_model: [44, 38, 56], pill_mcp: [32, 42, 44], pill_daily: [40, 36, 42],
     pill_ink: [216, 214, 230],
   }),
-  new Theme('synthwave', 'Synthwave — 80s neon, hot pink and cyan', {
-    ink: [255, 110, 255], mute: [180, 100, 200], edge: [60, 20, 80],
-    s_ok: [0, 255, 255], s_warn: [255, 0, 255], s_hot: [255, 20, 147],
-    pill_5h: [50, 15, 70], pill_7d: [60, 20, 90],
-    pill_model: [70, 30, 60], pill_mcp: [40, 25, 75], pill_daily: [55, 20, 65],
-    pill_ink: [255, 240, 255],
-  }),
-  new Theme('cyberpunk', 'Cyberpunk — acid green, electric blue, bold', {
-    ink: [200, 255, 220], mute: [0, 180, 160], edge: [10, 40, 30],
-    s_ok: [0, 255, 136], s_warn: [255, 102, 0], s_hot: [255, 0, 102],
-    pill_5h: [8, 35, 28], pill_7d: [12, 45, 38],
-    pill_model: [15, 30, 40], pill_mcp: [5, 42, 35], pill_daily: [18, 38, 32],
-    pill_ink: [220, 255, 240],
-  }),
-  new Theme('neon', 'Neon — maximum brightness, vivid saturated', {
-    ink: [224, 255, 224], mute: [0, 200, 180], edge: [20, 30, 20],
-    s_ok: [57, 255, 20], s_warn: [255, 255, 0], s_hot: [255, 0, 110],
-    pill_5h: [15, 25, 15], pill_7d: [20, 30, 18],
-    pill_model: [25, 18, 28], pill_mcp: [12, 28, 22], pill_daily: [22, 25, 15],
-    pill_ink: [240, 255, 240],
-  }),
-  new Theme('candy', 'Candy — bright pastels, bubblegum and mint', {
-    ink: [255, 100, 150], mute: [200, 140, 200], edge: [80, 50, 90],
-    s_ok: [100, 255, 180], s_warn: [255, 220, 100], s_hot: [255, 80, 130],
-    pill_5h: [65, 40, 75], pill_7d: [72, 48, 82],
-    pill_model: [80, 55, 70], pill_mcp: [55, 65, 78], pill_daily: [68, 58, 74],
-    pill_ink: [255, 230, 240],
-  }),
-  new Theme('lava', 'Lava — molten reds and oranges, fiery', {
-    ink: [255, 160, 50], mute: [180, 100, 60], edge: [60, 20, 10],
-    s_ok: [255, 180, 50], s_warn: [255, 120, 30], s_hot: [255, 40, 20],
-    pill_5h: [50, 18, 8], pill_7d: [58, 22, 12],
-    pill_model: [65, 28, 18], pill_mcp: [42, 25, 15], pill_daily: [55, 20, 10],
-    pill_ink: [255, 230, 200],
-  }),
 ];
 
 const _BY_NAME = {};

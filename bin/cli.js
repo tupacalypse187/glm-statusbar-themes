@@ -33,7 +33,6 @@ Config keys:
   color_warn          Override "warn" severity color (hex, or "off")
   color_hot           Override "hot" severity color (hex, or "off")
   two_lines           Use two-line layout (true/false)
-  emojis              Show emoji prefixes (true/false)
 
 Available modules:
 ${listModules().map(m => `  ${m.key.padEnd(12)} ${m.description}`).join('\n')}
@@ -134,7 +133,6 @@ const cliFlags = {
   style: null,
   warningThreshold: null,
   criticalThreshold: null,
-  noEmojis: false,
 };
 
 for (let i = 0; i < args.length; i++) {
@@ -180,9 +178,6 @@ for (let i = 0; i < args.length; i++) {
     case '--critical-threshold':
       cliFlags.criticalThreshold = Number(args[++i]);
       break;
-    case '--no-emojis':
-      cliFlags.noEmojis = true;
-      break;
   }
 }
 
@@ -203,7 +198,6 @@ Render options:
   --style <name>         Override style for this invocation
   --warning-threshold <n>  Override warning % for this invocation
   --critical-threshold <n>  Override critical % for this invocation
-  --no-emojis            Disable emoji prefixes for this invocation
   --list-themes          List available themes
   --list-styles          List available styles
   --list-modules         List available metric modules
@@ -217,14 +211,13 @@ Config commands:
   config help                Show detailed config help
 
 Config keys: theme, style, modules, warning_threshold, critical_threshold,
-             color_ok, color_warn, color_hot, two_lines, emojis
+             color_ok, color_warn, color_hot, two_lines
 
 Environment variables:
   CLAUDE_STATUSBAR_THEME                  Override theme
   CLAUDE_STATUSBAR_STYLE                  Override style
   CLAUDE_STATUSBAR_WARNING_THRESHOLD      Override warning %
   CLAUDE_STATUSBAR_CRITICAL_THRESHOLD     Override critical %
-  CLAUDE_STATUSBAR_EMOJIS                 Override emoji display (true/false)
 
 Config file: ${CONFIG_PATH}
 `);
@@ -317,7 +310,6 @@ async function main() {
       warningThreshold: config.warningThreshold,
       criticalThreshold: config.criticalThreshold,
       twoLines: !cliFlags.compact,
-      emojis: config.emojis,
     };
 
     if (cliFlags.local) {

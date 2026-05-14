@@ -5,36 +5,8 @@
  * Modules are iterated dynamically — no hardcoded metric positions.
  */
 
-const { calculateCost } = require('./modules');
-
 const RESET = '\x1b[0m';
 const BOLD = '\x1b[1m';
-
-const MODULE_EMOJI = {
-  '5h': '\u{23F1}️',     // stopwatch
-  'mcp': '\u{1F527}',          // wrench
-  'ctx': '\u{1F9E0}',          // brain
-  'cache': '⚡',           // lightning
-  '5h-tokens': '\u{1F525}',    // fire
-  'daily': '\u{1F4CA}',        // bar chart
-  'cost': '\u{1F4B0}',         // money bag
-};
-
-const STAT_EMOJI = {
-  model: '\u{1F916}',          // robot
-  session: '\u{1F4AC}',        // speech bubble
-  daily: '\u{1F4C8}',          // chart up
-  monthly: '\u{1F4C5}',        // calendar
-  fiveHourTokens: '\u{1F525}', // fire
-};
-
-function modEmoji(key, on) {
-  return on !== false && MODULE_EMOJI[key] ? MODULE_EMOJI[key] + ' ' : '';
-}
-
-function statEmoji(which, on) {
-  return on !== false && STAT_EMOJI[which] ? STAT_EMOJI[which] + ' ' : '';
-}
 
 function fg(rgb) { return `\x1b[38;2;${rgb[0]};${rgb[1]};${rgb[2]}m`; }
 function bg(rgb) { return `\x1b[48;2;${rgb[0]};${rgb[1]};${rgb[2]}m`; }
@@ -113,59 +85,6 @@ function mini3(pct, theme, warningThreshold, criticalThreshold) {
   return `${fg(col)}${cells.join('')}${RESET}`;
 }
 
-// ── Gradient bar (gradient style) ──
-
-function lerpColor(a, b, t) {
-  return [
-    Math.round(a[0] + (b[0] - a[0]) * t),
-    Math.round(a[1] + (b[1] - a[1]) * t),
-    Math.round(a[2] + (b[2] - a[2]) * t),
-  ];
-}
-
-function buildGradientBar(pct, width, theme, warningThreshold, criticalThreshold) {
-  const clamped = Math.max(0, Math.min(pct, 100));
-  let filled = Math.round(clamped / 100 * width);
-  if (pct > 0 && filled === 0) filled = 1;
-  const text = pct > 100 ? 'MAX' : `${Math.round(pct)}%`;
-  const padded = text.padStart(width).padEnd(width);
-
-  // Determine gradient endpoints based on severity
-  let startCol, endCol;
-  if (pct >= criticalThreshold) {
-    startCol = theme.s_warn;
-    endCol = theme.s_hot;
-  } else if (pct >= warningThreshold) {
-    startCol = theme.s_ok;
-    endCol = theme.s_hot;
-  } else {
-    startCol = theme.s_ok;
-    endCol = theme.s_warn;
-  }
-
-  const bgEmpty = bg(theme.edge);
-  const fgOverlay = fg(theme.pill_ink);
-
-  let result = '';
-  for (let i = 0; i < padded.length; i++) {
-    const ch = padded[i];
-    if (i < filled) {
-      const t = filled > 1 ? i / (filled - 1) : 0;
-      const gradColor = lerpColor(startCol, endCol, t);
-      const bgFill = bg(gradColor);
-      result += ch === ' '
-        ? `${bgFill}${fgOverlay}${FILL}`
-        : `${bgFill}${fgOverlay}${ch}`;
-    } else {
-      result += ch === ' '
-        ? `${bgEmpty}${fgOverlay}${EMPTY}`
-        : `${bgEmpty}${fgOverlay}${ch}`;
-    }
-  }
-  result += RESET;
-  return result;
-}
-
 // ── Shared data shape ──
 
 function normalizeData(context, usageData) {
@@ -189,44 +108,35 @@ function normalizeData(context, usageData) {
     monthlyTokens: usageData?.monthly?.totalTokens ?? 0,
     monthlyCalls: usageData?.monthly?.totalCalls ?? 0,
     dailyTokens: usageData?.daily?.dailyTokens ?? 0,
-    cost: calculateCost(context),
-    modelId: context.modelId || '',
   };
 }
 
 // ── Style: classic ──
 
 function renderClassic(data, theme, modules, opts = {}) {
-  const { warningThreshold = 50, criticalThreshold = 80, twoLines = true, emojis = true } = opts;
+  const { warningThreshold = 50, criticalThreshold = 80, twoLines = true } = opts;
   const INK = fg(theme.ink);
   const MUTE = fg(theme.mute);
   const separator = `${MUTE} │${RESET}`;
-  const E = emojis;
 
   // Line 1: model + token stats
   const line1Parts = [];
-  line1Parts.push(`${statEmoji('model', E)}${INK}${BOLD}${data.model}${RESET}`);
-  line1Parts.push(`${statEmoji('session', E)}${MUTE}Session:${formatTokens(data.sessionTokens)}${RESET}`);
-  line1Parts.push(`${statEmoji('daily', E)}${INK}Daily:${formatTokens(data.dailyTokens)}${RESET}`);
-  line1Parts.push(`${statEmoji('monthly', E)}${INK}Monthly:${formatTokens(data.monthlyTokens)}${RESET}`);
-  line1Parts.push(`${statEmoji('fiveHourTokens', E)}${INK}5H Tokens:${formatTokens(data.fiveHourTokens)}${RESET}`);
+  line1Parts.push(`${INK}${BOLD}${data.model}${RESET}`);
+  line1Parts.push(`${MUTE}Session:${formatTokens(data.sessionTokens)}${RESET}`);
+  line1Parts.push(`${INK}Daily:${formatTokens(data.dailyTokens)}${RESET}`);
+  line1Parts.push(`${INK}Month:${formatTokens(data.monthlyTokens)}${RESET}`);
+  line1Parts.push(`${INK}5H Tokens:${formatTokens(data.fiveHourTokens)}${RESET}`);
   const line1 = line1Parts.join(` ${separator} `);
 
   // Line 2: dynamic module bars
   const line2Parts = [];
   for (const mod of modules) {
-    if (mod.textOnly) {
-      const extra = mod.getExtra(data);
-      const col = fg(theme.ink);
-      line2Parts.push(`${modEmoji(mod.key, E)}${col}${mod.label}${RESET} ${INK}${extra}${RESET}`);
-      continue;
-    }
     const pct = mod.getPct(data);
     const extra = mod.getExtra(data);
     const bar = buildBatteryBar(pct ?? 0, 10, theme, warningThreshold, criticalThreshold);
     const col = fg(severityColor(theme, pct, warningThreshold, criticalThreshold));
     const extraStr = extra ? ` ${MUTE}(${extra})${RESET}` : '';
-    line2Parts.push(`${modEmoji(mod.key, E)}${col}${mod.label}${RESET} ${MUTE}[${RESET}${bar}${MUTE}]${RESET} ${col}${pctText(pct)}${RESET}${extraStr}`);
+    line2Parts.push(`${col}${mod.label}${RESET} ${MUTE}[${RESET}${bar}${MUTE}]${RESET} ${col}${pctText(pct)}${RESET}${extraStr}`);
   }
   const line2 = line2Parts.join(` ${separator} `);
 
@@ -237,10 +147,9 @@ function renderClassic(data, theme, modules, opts = {}) {
 // ── Style: capsule ──
 
 function renderCapsule(data, theme, modules, opts = {}) {
-  const { warningThreshold = 50, criticalThreshold = 80, emojis = true } = opts;
+  const { warningThreshold = 50, criticalThreshold = 80 } = opts;
   const INK = fg(theme.pill_ink);
   const EDGE = fg(theme.edge);
-  const E = emojis;
 
   function pill(bgRgb, body) {
     return `${bg(bgRgb)}${INK} ${body} ${RESET}`;
@@ -258,30 +167,22 @@ function renderCapsule(data, theme, modules, opts = {}) {
   // Dynamic module pills
   for (let i = 0; i < modules.length; i++) {
     const mod = modules[i];
-    const bgRgb = pillBg(theme, i);
-
-    if (mod.textOnly) {
-      const extra = mod.getExtra(data);
-      const body = `${modEmoji(mod.key, E)}${BOLD}${mod.label}${RESET}${INK}${bg(bgRgb)} ${extra}`;
-      parts.push(pill(bgRgb, body));
-      continue;
-    }
-
     const pct = mod.getPct(data);
     const extra = mod.getExtra(data);
+    const bgRgb = pillBg(theme, i);
     const extraLabel = extra ? ` · ${extra}` : '';
-    const body = `${modEmoji(mod.key, E)}${BOLD}◷ ${mod.label}${RESET}${INK}${bg(bgRgb)} ${pctText(pct)}${extraLabel}${sevDot(pct)}${INK}${bg(bgRgb)}`;
+    const body = `${BOLD}◷ ${mod.label}${RESET}${INK}${bg(bgRgb)} ${pctText(pct)}${extraLabel}${sevDot(pct)}${INK}${bg(bgRgb)}`;
     parts.push(pill(bgRgb, body));
   }
 
   // Model pill
-  parts.push(pill(theme.pill_model, `${statEmoji('model', E)}${BOLD}◆${RESET}${INK}${bg(theme.pill_model)} ${data.model}${sevDot(data.contextUsed)}${INK}${bg(theme.pill_model)}`));
+  parts.push(pill(theme.pill_model, `${BOLD}◆${RESET}${INK}${bg(theme.pill_model)} ${data.model}${sevDot(data.contextUsed)}${INK}${bg(theme.pill_model)}`));
 
-  // Text stat pills: Session, Daily, Monthly, 5h Tokens
-  parts.push(pill(theme.pill_7d, `${statEmoji('session', E)}${BOLD}Session${RESET}${INK}${bg(theme.pill_7d)} ${formatTokens(data.sessionTokens)}`));
-  parts.push(pill(theme.pill_daily, `${statEmoji('daily', E)}${BOLD}Daily${RESET}${INK}${bg(theme.pill_daily)} ${formatTokens(data.dailyTokens)}`));
-  parts.push(pill(theme.pill_7d, `${statEmoji('monthly', E)}${BOLD}Monthly${RESET}${INK}${bg(theme.pill_7d)} ${formatTokens(data.monthlyTokens)}`));
-  parts.push(pill(theme.pill_daily, `${statEmoji('fiveHourTokens', E)}${BOLD}5H Tokens${RESET}${INK}${bg(theme.pill_daily)} ${formatTokens(data.fiveHourTokens)}`));
+  // Text stat pills: Session, Daily, Month, 5h Tokens
+  parts.push(pill(theme.pill_7d, `${BOLD}Session${RESET}${INK}${bg(theme.pill_7d)} ${formatTokens(data.sessionTokens)}`));
+  parts.push(pill(theme.pill_daily, `${BOLD}Daily${RESET}${INK}${bg(theme.pill_daily)} ${formatTokens(data.dailyTokens)}`));
+  parts.push(pill(theme.pill_7d, `${BOLD}Month${RESET}${INK}${bg(theme.pill_7d)} ${formatTokens(data.monthlyTokens)}`));
+  parts.push(pill(theme.pill_daily, `${BOLD}5H Tokens${RESET}${INK}${bg(theme.pill_daily)} ${formatTokens(data.fiveHourTokens)}`));
 
   return parts.join(spacer);
 }
@@ -289,76 +190,30 @@ function renderCapsule(data, theme, modules, opts = {}) {
 // ── Style: hairline ──
 
 function renderHairline(data, theme, modules, opts = {}) {
-  const { warningThreshold = 50, criticalThreshold = 80, emojis = true } = opts;
+  const { warningThreshold = 50, criticalThreshold = 80 } = opts;
   const INK = fg(theme.ink);
   const MUTE = fg(theme.mute);
   const EDGE = fg(theme.edge);
   const sep = `${EDGE}┊${RESET}`;
-  const E = emojis;
   const parts = [];
 
   // Dynamic module segments
   for (const mod of modules) {
-    if (mod.textOnly) {
-      const extra = mod.getExtra(data);
-      parts.push(`${modEmoji(mod.key, E)}${MUTE}›${RESET} ${INK}${mod.label}${RESET} ${INK}${extra}${RESET}`);
-      continue;
-    }
     const pct = mod.getPct(data);
     const extra = mod.getExtra(data);
     const extraStr = extra ? ` ${MUTE}${extra}${RESET}` : '';
-    parts.push(`${modEmoji(mod.key, E)}${MUTE}› ${mod.label}${RESET} ${mini3(pct, theme, warningThreshold, criticalThreshold)} ${INK}${pctText(pct)}${RESET}${extraStr}`);
+    parts.push(`${MUTE}› ${mod.label}${RESET} ${mini3(pct, theme, warningThreshold, criticalThreshold)} ${INK}${pctText(pct)}${RESET}${extraStr}`);
   }
 
   // Model + stats
   const modelCol = data.contextUsed == null ? INK : fg(severityColor(theme, data.contextUsed, warningThreshold, criticalThreshold));
-  parts.push(`${statEmoji('model', E)}${modelCol}${data.model}${RESET}`);
-  parts.push(`${statEmoji('session', E)}${MUTE}Session${RESET} ${INK}${formatTokens(data.sessionTokens)}${RESET}`);
-  parts.push(`${statEmoji('daily', E)}${MUTE}Daily${RESET} ${INK}${formatTokens(data.dailyTokens)}${RESET}`);
-  parts.push(`${statEmoji('monthly', E)}${MUTE}Monthly${RESET} ${INK}${formatTokens(data.monthlyTokens)}${RESET}`);
-  parts.push(`${statEmoji('fiveHourTokens', E)}${MUTE}5H Tokens${RESET} ${INK}${formatTokens(data.fiveHourTokens)}${RESET}`);
+  parts.push(`${MUTE}›${RESET} ${modelCol}${data.model}${RESET}`);
+  parts.push(`${MUTE}Session${RESET} ${INK}${formatTokens(data.sessionTokens)}${RESET}`);
+  parts.push(`${MUTE}Daily${RESET} ${INK}${formatTokens(data.dailyTokens)}${RESET}`);
+  parts.push(`${MUTE}Month${RESET} ${INK}${formatTokens(data.monthlyTokens)}${RESET}`);
+  parts.push(`${MUTE}5H Tokens${RESET} ${INK}${formatTokens(data.fiveHourTokens)}${RESET}`);
 
   return parts.join(sep);
-}
-
-// ── Style: gradient ──
-
-function renderGradient(data, theme, modules, opts = {}) {
-  const { warningThreshold = 50, criticalThreshold = 80, twoLines = true, emojis = true } = opts;
-  const INK = fg(theme.ink);
-  const MUTE = fg(theme.mute);
-  const separator = `${MUTE} │${RESET}`;
-  const E = emojis;
-
-  // Line 1: model + token stats (same as classic)
-  const line1Parts = [];
-  line1Parts.push(`${statEmoji('model', E)}${INK}${BOLD}${data.model}${RESET}`);
-  line1Parts.push(`${statEmoji('session', E)}${MUTE}Session:${formatTokens(data.sessionTokens)}${RESET}`);
-  line1Parts.push(`${statEmoji('daily', E)}${INK}Daily:${formatTokens(data.dailyTokens)}${RESET}`);
-  line1Parts.push(`${statEmoji('monthly', E)}${INK}Monthly:${formatTokens(data.monthlyTokens)}${RESET}`);
-  line1Parts.push(`${statEmoji('fiveHourTokens', E)}${INK}5H Tokens:${formatTokens(data.fiveHourTokens)}${RESET}`);
-  const line1 = line1Parts.join(` ${separator} `);
-
-  // Line 2: gradient bars for modules
-  const line2Parts = [];
-  for (const mod of modules) {
-    if (mod.textOnly) {
-      const extra = mod.getExtra(data);
-      const col = fg(theme.ink);
-      line2Parts.push(`${modEmoji(mod.key, E)}${col}${mod.label}${RESET} ${INK}${extra}${RESET}`);
-      continue;
-    }
-    const pct = mod.getPct(data);
-    const extra = mod.getExtra(data);
-    const bar = buildGradientBar(pct ?? 0, 10, theme, warningThreshold, criticalThreshold);
-    const col = fg(severityColor(theme, pct, warningThreshold, criticalThreshold));
-    const extraStr = extra ? ` ${MUTE}(${extra})${RESET}` : '';
-    line2Parts.push(`${modEmoji(mod.key, E)}${col}${mod.label}${RESET} ${MUTE}[${RESET}${bar}${MUTE}]${RESET} ${col}${pctText(pct)}${RESET}${extraStr}`);
-  }
-  const line2 = line2Parts.join(` ${separator} `);
-
-  if (twoLines) return line1 + '\n' + line2;
-  return line1 + ` ${separator} ` + line2;
 }
 
 // ── Dispatcher ──
@@ -367,7 +222,6 @@ const RENDERERS = {
   classic: renderClassic,
   capsule: renderCapsule,
   hairline: renderHairline,
-  gradient: renderGradient,
 };
 
 function render(style, data, theme, modules, opts) {

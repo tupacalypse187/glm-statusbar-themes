@@ -57,7 +57,6 @@ function formatStatusLine(context, usageData, options = {}) {
     colorOk = null,
     colorWarn = null,
     colorHot = null,
-    emojis = true,
   } = options;
 
   let theme = getTheme(themeName);
@@ -76,7 +75,6 @@ function formatStatusLine(context, usageData, options = {}) {
     warningThreshold,
     criticalThreshold,
     twoLines,
-    emojis,
   });
 }
 

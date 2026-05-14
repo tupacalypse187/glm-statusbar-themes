@@ -4,48 +4,7 @@
  * Each module extracts a percentage and optional extra text from the
  * normalized data object. The status bar renders whichever modules the
  * user has enabled in their config, in order.
- *
- * Modules with `textOnly: true` are rendered as text labels without
- * progress bars. The cost module is an example — it shows a dollar
- * figure, not a percentage.
  */
-
-const MODEL_PRICING = {
-  'glm-5-1':      { label: 'Opus 4.6',   input: 5.00, output: 25.00, cacheRead: 0.50, cacheWrite: 10.00 },
-  'glm-5-turbo':  { label: 'Sonnet 4.6', input: 3.00, output: 15.00, cacheRead: 0.30, cacheWrite: 6.00 },
-  'glm-5v-turbo': { label: 'Sonnet 4.6', input: 3.00, output: 15.00, cacheRead: 0.30, cacheWrite: 6.00 },
-  'glm-4.7-flash':{ label: 'Haiku 4.5',  input: 1.00, output: 5.00,  cacheRead: 0.10, cacheWrite: 2.00 },
-};
-
-function normalizeModelId(raw) {
-  return (raw || '').toLowerCase().replace(/[\s.]/g, '-');
-}
-
-function calculateCost(context) {
-  const modelId = normalizeModelId(context.modelId);
-  const pricing = MODEL_PRICING[modelId];
-  if (!pricing) return null;
-  return (
-    ((context.inputTokens || 0) / 1e6) * pricing.input +
-    ((context.outputTokens || 0) / 1e6) * pricing.output +
-    ((context.cacheCreationTokens || 0) / 1e6) * pricing.cacheWrite +
-    ((context.cacheReadTokens || 0) / 1e6) * pricing.cacheRead
-  );
-}
-
-function estimateCost(tokens, modelId) {
-  const pricing = MODEL_PRICING[normalizeModelId(modelId)];
-  if (!pricing || !tokens) return null;
-  // Blended rate: average of input + output (typical ~3:1 input:output ratio)
-  const blendedRate = (pricing.input * 0.75 + pricing.output * 0.25);
-  return (tokens / 1e6) * blendedRate;
-}
-
-function formatCost(cost) {
-  if (cost == null) return '--';
-  if (cost < 0.01) return '$' + cost.toFixed(4);
-  return '$' + cost.toFixed(2);
-}
 
 const MODULES = [
   {
@@ -111,23 +70,6 @@ const MODULES = [
     },
     getExtra: (d) => d.dailyTokens ? fmtTok(d.dailyTokens) : '',
   },
-  {
-    key: 'cost',
-    label: 'Cost',
-    description: 'Estimated API cost: session / 5H / monthly (Claude Code pricing)',
-    textOnly: true,
-    getPct: () => null,
-    getExtra: (d) => {
-      const modelId = d.modelId || '';
-      const parts = [];
-      if (d.cost != null) parts.push('S:' + formatCost(d.cost));
-      const cost5h = estimateCost(d.fiveHourTokens, modelId);
-      if (cost5h != null) parts.push('5H:' + formatCost(cost5h));
-      const costMonthly = estimateCost(d.monthlyTokens, modelId);
-      if (costMonthly != null) parts.push('M:' + formatCost(costMonthly));
-      return parts.length ? parts.join(' ') : '--';
-    },
-  },
 ];
 
 const _BY_KEY = {};
@@ -188,4 +130,4 @@ function fmtReset(ts) {
   return h + ':' + String(d.getMinutes()).padStart(2, '0') + ' ' + ampm;
 }
 
-module.exports = { MODULES, MODEL_PRICING, getModule, listModules, resolveModules, validateModules, normalizeModelId, calculateCost, estimateCost, formatCost };
+module.exports = { MODULES, getModule, listModules, resolveModules, validateModules };
