@@ -18,7 +18,7 @@ const MODEL_PRICING = {
 };
 
 function normalizeModelId(raw) {
-  return (raw || '').toLowerCase().replace(/[\s.]/g, '-');
+  return (raw || '').toLowerCase().replace(/[\s.]/g, '-').replace(/\[.*?\]/g, '');
 }
 
 function calculateCost(context) {
