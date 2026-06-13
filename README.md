@@ -221,6 +221,7 @@ Pricing per million tokens:
 
 | GLM Model | Claude Equivalent | Input | Output | Cache Read | Cache Write |
 |:---|:---|:---|:---|:---|:---|
+| `glm-5-2` | Opus 4.7 | $5.00 | $25.00 | $0.50 | $10.00 |
 | `glm-5-1` | Opus 4.6 | $5.00 | $25.00 | $0.50 | $10.00 |
 | `glm-5-turbo` | Sonnet 4.6 | $3.00 | $15.00 | $0.30 | $6.00 |
 | `glm-5v-turbo` | Sonnet 4.6 | $3.00 | $15.00 | $0.30 | $6.00 |

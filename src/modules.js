@@ -11,6 +11,7 @@
  */
 
 const MODEL_PRICING = {
+  'glm-5-2':      { label: 'Opus 4.7',   input: 5.00, output: 25.00, cacheRead: 0.50, cacheWrite: 10.00 },
   'glm-5-1':      { label: 'Opus 4.6',   input: 5.00, output: 25.00, cacheRead: 0.50, cacheWrite: 10.00 },
   'glm-5-turbo':  { label: 'Sonnet 4.6', input: 3.00, output: 15.00, cacheRead: 0.30, cacheWrite: 6.00 },
   'glm-5v-turbo': { label: 'Sonnet 4.6', input: 3.00, output: 15.00, cacheRead: 0.30, cacheWrite: 6.00 },
