@@ -15,6 +15,7 @@
 ## 📑 Table of Contents
 
 - [🎯 What it does](#-what-it-does)
+- [🏗️ Architecture](#️-architecture)
 - [🚀 Quick Start](#-quick-start)
 - [🎨 Themes](#-themes)
 - [🎨 Styles](#-styles)
@@ -48,6 +49,37 @@ All four styles show the same information: **progress bar modules** (configurabl
 **npm:** [https://www.npmjs.com/package/glm-statusbar-themes](https://www.npmjs.com/package/glm-statusbar-themes)
 
 ---
+
+
+## 🏗️ Architecture
+
+The package is a zero-dependency Node.js program with two entry modes: as Claude Code's `statusLine` command it reads session JSON on stdin and prints exactly one rendered line on stdout; as a CLI it manages the persistent config and previews. Usage and quota figures come from the GLM / z.ai API, cached on disk so the bar stays fast.
+
+```mermaid
+flowchart LR
+    CC["🤖 Claude Code"] -->|"stdin JSON<br/>session + context window"| CLI["⌨️ bin/cli.js<br/>statusLine entry"]
+    CLI --> Core["🎨 src/index.js<br/>generateStatusLine"]
+    Core --> Fmt["🧮 formatter.js<br/>parse context + cost estimate"]
+    Core --> API["🌐 api.js<br/>usage + quota requests"]
+    API --> Cache["💾 cache.js<br/>on-disk response cache"]
+    API --> ZAI["☁️ GLM / z.ai API"]
+    Config["⚙️ ~/.claude/glm-statusbar.json<br/>src/config.js"] --> Core
+    Core --> Render["🖼️ themes.js + styles.js + modules.js<br/>25 themes · 4 styles · 7 modules"]
+    Render --> Out["📤 stdout<br/>one status line"]
+    Core -.-> Bridge["🌉 bridge.js<br/>session state for other tools"]
+```
+
+**Components**
+
+- **Entry point** (`bin/cli.js`) — the `statusLine` command Claude Code invokes, plus `config` subcommands and `--preview` / `--local` modes.
+- **Core** (`src/index.js`) — `generateStatusLine`: extracts session info, gathers metrics, and assembles the final line.
+- **Formatter** (`src/formatter.js`) — parses the stdin context payload and computes derived figures such as the cost estimate.
+- **API + cache** (`src/api.js`, `src/cache.js`) — fetches token-usage and quota-limit data from the GLM / z.ai endpoints, with an on-disk cache to avoid a network call on every render.
+- **Config** (`src/config.js`) — resolves theme, style, module list, thresholds, and colors from `~/.claude/glm-statusbar.json` over built-in defaults.
+- **Renderers** (`src/themes.js`, `src/styles.js`, `src/modules.js`) — 25 color themes, 4 layout styles, and 7 swappable metric modules that turn the metrics into the bar.
+- **Bridge** (`src/bridge.js`) — writes the current session/context state to a bridge file so other tools can read it.
+
+**Main flow:** Claude Code pipes session JSON to stdin → the core parses context locally and fetches usage/quota (usually from cache) → the selected theme, style, and modules render the metrics → one line goes to stdout and appears at the bottom of the terminal.
 
 ## 🚀 Quick Start
 
