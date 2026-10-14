@@ -1,4 +1,4 @@
-# GLM Statusbar Themes
+# 🎨 GLM Statusbar Themes
 
 > A beautifully themed status bar for **Claude Code** running on the **GLM / z.ai** proxy.
 > 25 color themes · 4 layout styles · 7 swappable metric modules · Zero dependencies
@@ -12,7 +12,22 @@
 
 ---
 
-## What it does
+## 📑 Table of Contents
+
+- [🎯 What it does](#-what-it-does)
+- [🚀 Quick Start](#-quick-start)
+- [🎨 Themes](#-themes)
+- [🎨 Styles](#-styles)
+- [🧩 Modules](#-modules)
+- [🎨 Severity Colors](#-severity-colors)
+- [⚙️ Configuration](#️-configuration)
+- [⌨️ CLI Reference](#️-cli-reference)
+- [👀 Preview all combinations](#-preview-all-combinations)
+- [🗂️ Project Structure](#️-project-structure)
+- [🙏 Credits](#-credits)
+- [📄 License](#-license)
+
+## 🎯 What it does
 
 This tool runs as Claude Code's `statusLine` command and renders a live, color-themed bar at the bottom of your terminal showing:
 
@@ -34,9 +49,9 @@ All four styles show the same information: **progress bar modules** (configurabl
 
 ---
 
-## Quick Start
+## 🚀 Quick Start
 
-### Option A: npx (recommended)
+### 🔹 Option A: npx (recommended)
 
 The fastest way to get going — no global install required. Add this to `~/.claude/settings.json`:
 
@@ -53,7 +68,7 @@ The fastest way to get going — no global install required. Add this to `~/.cla
 }
 ```
 
-### Option B: Local clone
+### 🔹 Option B: Local clone
 
 ```bash
 git clone https://github.com/tupacalypse187/glm-statusbar-themes.git
@@ -71,7 +86,7 @@ Then point `statusLine.command` at the local path:
 }
 ```
 
-### Create your config (optional)
+### 🔹 Create your config (optional)
 
 Create `~/.claude/glm-statusbar.json`:
 
@@ -87,11 +102,11 @@ That's it — the status bar appears on the next refresh.
 
 ---
 
-## Themes
+## 🎨 Themes
 
 25 built-in color palettes. Every theme works with every style.
 
-### Dark themes
+### 🎨 Dark themes
 
 | Theme | Vibe | OK (green) | Warning | Critical |
 |:---|:---|:---|:---|:---|
@@ -118,7 +133,7 @@ That's it — the status bar appears on the next refresh.
 | `candy` | Bright pastels, bubblegum and mint | Mint `#64FFB4` | Lemon `#FFDC64` | Bubblegum `#FF5082` |
 | `lava` | Molten reds and oranges, fiery | Gold `#FFB432` | Orange `#FF781E` | Lava red `#FF2814` |
 
-### Light themes
+### 🎨 Light themes
 
 | Theme | Vibe | OK (green) | Warning | Critical |
 |:---|:---|:---|:---|:---|
@@ -126,7 +141,7 @@ That's it — the status bar appears on the next refresh.
 | `sakura` | Pink-warm, cute | Soft green `#78aa82` | Orange `#dc965a` | Pink `#d25a6e` |
 | `solarized-light` | Classic warm/cool, light variant | Olive `#859900` | Amber `#b58900` | Red `#dc322f` |
 
-### Switch themes
+### 🎨 Switch themes
 
 ```bash
 # Via config (persists)
@@ -138,11 +153,11 @@ echo '{}' | npx glm-statusbar-themes --theme nord --local
 
 ---
 
-## Styles
+## 🎨 Styles
 
 4 layout renderers. All styles show the same data — just different visual presentation.
 
-### Classic — Battery bars
+### 🔹 Classic — Battery bars
 
 Two-line layout with `[████░░░░]` battery bars and percentage overlays.
 
@@ -151,7 +166,7 @@ Two-line layout with `[████░░░░]` battery bars and percentage ov
 ⏱️ 5H [██░░░░░░░░] 22% (12:39 PM)  │ 🧠 Context [██████░░░░] 68% (136.0K / 200K)  │ 💰 Cost S:$1.76 5H:$125.00 M:$9,792.00
 ```
 
-### Capsule — Colored pills
+### 🎨 Capsule — Colored pills
 
 Single-line pill/capsule style with distinct background colors per metric and severity dots.
 
@@ -159,7 +174,7 @@ Single-line pill/capsule style with distinct background colors per metric and se
 ⏱️ ◷ 5H 22% · 12:39 PM ● ╱ 🧠 ◷ Context 68% · 136.0K / 200K ● ╱ 💰 Cost S:$1.76 5H:$125.00 M:$9,792.00 ╱ 🤖 ◆ GLM-5 ● ╱ 💬 Session 160K ╱ 📈 Daily 42.8M ╱ 📅 Monthly 979.2M ╱ 🔥 5H Tokens 12.5M
 ```
 
-### Hairline — Minimal
+### 🔹 Hairline — Minimal
 
 Single-line with 3-cell mini progress bars and `┊` separators. Most compact.
 
@@ -167,7 +182,7 @@ Single-line with 3-cell mini progress bars and `┊` separators. Most compact.
 ⏱️ › 5H ▖▁▁ 22% 12:39 PM ┊ 🧠 › Context ██▓ 68% 136.0K / 200K ┊ 💰 › Cost S:$1.76 5H:$125.00 M:$9,792.00 ┊ 🤖 GLM-5 ┊ 💬 Session 160K ┊ 📈 Daily 42.8M ┊ 📅 Monthly 979.2M ┊ 🔥 5H Tokens 12.5M
 ```
 
-### Gradient — Color-shifting bars
+### 🎨 Gradient — Color-shifting bars
 
 Two-line layout where bar colors shift smoothly from cool (ok) to warm (critical) based on usage level. Each cell in the bar gets an interpolated color, creating a gradient effect that intensifies as usage grows.
 
@@ -178,7 +193,7 @@ Two-line layout where bar colors shift smoothly from cool (ok) to warm (critical
 
 The gradient uses the theme's own severity colors as endpoints — ok to warn at low usage, warn to critical at high usage — so it adapts to every theme.
 
-### Switch styles
+### 🎨 Switch styles
 
 ```bash
 npx glm-statusbar-themes config set style capsule
@@ -189,11 +204,11 @@ npx glm-statusbar-themes config set style gradient
 
 ---
 
-## Modules
+## 🧩 Modules
 
 The progress bar slots are fully customizable. Pick which metrics you want to see as bars and in what order. Text stats (Model, Session, Daily, Monthly, 5H Tokens) are always shown regardless of module selection.
 
-### Available modules
+### 🧩 Available modules
 
 | Key | Label | Source | Bar Shows | Extra Info |
 |:---|:---:|:---|:---|:---|
@@ -205,7 +220,7 @@ The progress bar slots are fully customizable. Pick which metrics you want to se
 | `daily` | `Daily` | API + derived | Daily tokens vs avg burn rate | Token count |
 | `cost` | `Cost` | derived (text-only) | — | Session / 5H / Monthly cost (e.g. `S:$1.76 5H:$125.00 M:$9,792.00`) |
 
-### Cost estimation
+### 💰 Cost estimation
 
 The `cost` module estimates API spending as if using Claude Code models. It shows three cost breakdowns:
 
@@ -229,7 +244,7 @@ Pricing per million tokens:
 
 The cost module is **text-only** — it shows as a label with dollar amounts, not a progress bar.
 
-### Text stats (always shown)
+### 🔹 Text stats (always shown)
 
 These appear alongside the module bars in every style:
 
@@ -241,7 +256,7 @@ These appear alongside the module bars in every style:
 | Monthly | API | `979.2M` |
 | 5H Tokens | API | `12.5M` |
 
-### Swap modules
+### 🧩 Swap modules
 
 ```bash
 # Minimal — just the real limits
@@ -259,7 +274,7 @@ npx glm-statusbar-themes config set modules 5h,mcp,cache,5h-tokens,daily,ctx,cos
 
 ---
 
-## Severity Colors
+## 🎨 Severity Colors
 
 Metrics change color based on usage level. Thresholds and colors are fully customizable.
 
@@ -269,7 +284,7 @@ Metrics change color based on usage level. Thresholds and colors are fully custo
 | **Warning** (yellow) | >= warning threshold | Getting close to limit |
 | **Critical** (red) | >= critical threshold | Approaching or at limit |
 
-### Custom severity colors
+### 🎨 Custom severity colors
 
 Override the green/yellow/red with any hex color:
 
@@ -282,7 +297,7 @@ npx glm-statusbar-themes config set color_hot "#ff5555"
 npx glm-statusbar-themes config set color_ok off
 ```
 
-### Custom thresholds
+### 🔹 Custom thresholds
 
 ```bash
 npx glm-statusbar-themes config set warning_threshold 40
@@ -291,9 +306,9 @@ npx glm-statusbar-themes config set critical_threshold 75
 
 ---
 
-## Configuration
+## ⚙️ Configuration
 
-### Config file
+### ⚙️ Config file
 
 `~/.claude/glm-statusbar.json` — all keys are optional:
 
@@ -323,11 +338,11 @@ npx glm-statusbar-themes config set critical_threshold 75
 | `color_warn` | string | `null` | Override yellow severity color (hex) |
 | `color_hot` | string | `null` | Override red severity color (hex) |
 
-### Resolution order
+### 🔹 Resolution order
 
 CLI flag → environment variable → config file → built-in default
 
-### Environment variables
+### 🌍 Environment variables
 
 | Variable | Description |
 |:---|:---|
@@ -341,14 +356,14 @@ CLI flag → environment variable → config file → built-in default
 
 ---
 
-## CLI Reference
+## ⌨️ CLI Reference
 
 ```
 npx glm-statusbar-themes [options]              Render status line (reads stdin from Claude Code)
 npx glm-statusbar-themes config <subcommand>    Manage persistent configuration
 ```
 
-### Render options
+### 🔹 Render options
 
 | Flag | Description |
 |:---|:---|
@@ -364,7 +379,7 @@ npx glm-statusbar-themes config <subcommand>    Manage persistent configuration
 | `--no-emojis` | Disable emoji prefixes for this invocation |
 | `--help`, `-h` | Show help |
 
-### Config commands
+### ⌨️ Config commands
 
 ```bash
 npx glm-statusbar-themes config set <key> <value>    # Set a config value
@@ -373,7 +388,7 @@ npx glm-statusbar-themes config reset                # Reset all config to defau
 npx glm-statusbar-themes config help                 # Show detailed config help
 ```
 
-#### Examples
+#### 💡 Examples
 
 ```bash
 # Theme & style
@@ -408,7 +423,7 @@ npx glm-statusbar-themes config reset
 
 ---
 
-## Preview all combinations
+## 👀 Preview all combinations
 
 See every theme x style with sample data:
 
@@ -424,7 +439,7 @@ echo '{"model":{"display_name":"GLM-5"},"context_window":{"used_percentage":42,"
 
 ---
 
-## Project Structure
+## 🗂️ Project Structure
 
 ```
 glm-statusbar-themes/
@@ -448,7 +463,7 @@ glm-statusbar-themes/
 
 ---
 
-## Credits
+## 🙏 Credits
 
 This project was built on the shoulders of two excellent projects:
 
@@ -459,6 +474,6 @@ This project merges the best of both: GLM-native data fetching with rich themed 
 
 ---
 
-## License
+## 📄 License
 
 MIT
